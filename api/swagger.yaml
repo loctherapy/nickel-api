@@ -1,0 +1,689 @@
+swagger: "2.0"
+info:
+  description: "Nickel API"
+  version: "1.0.0"
+  title: "Nickel"
+  termsOfService: ""
+  contact:
+    email: "egorpanok@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:5050"
+basePath: "/api/v1"
+tags:
+- name: "Auth"
+  description: "Authorization methods"
+- name: "User"
+  description: "User methods"
+schemes:
+- "http"
+paths:
+  /user/signin:
+    post:
+      tags:
+      - "Auth"
+      summary: "Sign in with login and password"
+      description: "Return JWT and user roles if login is successful"
+      operationId: "signIn"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The user information to login"
+        required: true
+        schema:
+          $ref: "#/definitions/UserSignInInfo"
+      responses:
+        200:
+          description: "Successful login"
+        400:
+          description: "User name and/or password is not provided"
+        401:
+          description: "Authentication failed"
+      x-swagger-router-controller: "user"
+  /user/profile:
+    get:
+      tags:
+      - "User"
+      summary: "View user profile"
+      description: "Returns user profile"
+      operationId: "getProfile"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Profile returned successfully."
+        401:
+          description: "Authentication failed"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /user/getallavailableroles:
+    get:
+      tags:
+      - "User"
+      summary: "Returns all the available roles"
+      description: "Returns all the available roles"
+      operationId: "getAllAvailableUserRoles"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "The list of all available roles was returned successfully."
+        400:
+          description: "The list of all available roles was NOT returned successfully"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /user/validatetoken:
+    get:
+      tags:
+      - "Auth"
+      summary: "Validates the JWT"
+      description: "Returns user roles if the JWT is validated"
+      operationId: "validateToken"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Token verified"
+        401:
+          description: "Authentication failed"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /user/recoverpwd:
+    post:
+      tags:
+      - "Auth"
+      summary: "Sends password recovery link to the provided email if the user with such email is registered"
+      operationId: "recoverPwd"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The user information to login"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRecoverPasswordInfo"
+      responses:
+        200:
+          description: "Email with password recovery link was sent"
+        400:
+          description: "Email with password recovery link was not sent"
+      x-swagger-router-controller: "user"
+  /user/validaterecoverpwdtoken:
+    post:
+      tags:
+      - "Auth"
+      summary: "Validate recovery password token"
+      operationId: "validateRecoverPwdToken"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Recovery password token"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRecoverPasswordTokenInfo"
+      responses:
+        200:
+          description: "User information"
+        400:
+          description: "Provided token was expired or invalid"
+      x-swagger-router-controller: "user"
+  /user/setpwd:
+    post:
+      tags:
+      - "Auth"
+      summary: "Sets new password for a user by token if it is valid"
+      operationId: "setPassword"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Recovery password token and new password"
+        required: true
+        schema:
+          $ref: "#/definitions/UserSetPasswordInfo"
+      responses:
+        200:
+          description: "The password was reset"
+        400:
+          description: "The password was not reset"
+      x-swagger-router-controller: "user"
+  /users:
+    get:
+      tags:
+      - "Users"
+      summary: "Get all the users"
+      description: "Returns all the users"
+      operationId: "getAllUsers"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User list was returned successfully"
+        403:
+          description: "Access is denied to get user list"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+    post:
+      tags:
+        - "Users"
+      summary: "Add new user"
+      description: "Returns new user"
+      operationId: "add"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New user"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "New user successfully added"
+        400:
+          description: "New student was not added"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /users/active:
+    get:
+      tags:
+      - "Users"
+      summary: "Get all active users"
+      description: "Returns all active users"
+      operationId: "getActiveUsers"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of active users was returned successfully"
+        403:
+          description: "Access is denied to get user list"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /users/archived:
+    get:
+      tags:
+      - "Users"
+      summary: "Get all archived users"
+      description: "Returns all archived users"
+      operationId: "getArchivedUsers"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of archived users was returned successfully"
+        403:
+          description: "Access is denied to get user list"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /users/{id}:
+    get:
+      tags:
+        - "Users"
+      summary: "Gets a user by id"
+      description: "Gets a user by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the user"
+          type: "string"
+          required: true
+      operationId: "get"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User is returned successfully"
+        403:
+          description: "Access is denied to get the user"
+        400:
+          description: "Error occurred at getting the user"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+    put:
+      tags:
+        - "Users"
+      summary: "Updates a user by id"
+      description: "Updates a user by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the user"
+          type: "string"
+          required: true
+        - name: "body"
+          in: "body"
+          description: "Amended user properties"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      operationId: "update"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User is updated successfully"
+        403:
+          description: "Access is denied to update the user"
+        400:
+          description: "Error occurred at updating the user"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+    delete:
+      tags:
+        - "Users"
+      summary: "Deletes a user by id"
+      description: "Deletes a user by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the user"
+          type: "string"
+          required: true
+      operationId: "delete"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User is deleted successfully"
+        403:
+          description: "Access is denied to delete the user"
+        400:
+          description: "Error occurred at deleting the user"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /users/{id}/activate:
+    get:
+      tags:
+        - "Users"
+      summary: "Activates a user by id"
+      description: "Activates a user by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the user"
+          type: "string"
+          required: true
+      operationId: "activate"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User is activated successfully"
+        403:
+          description: "Access is denied to activate the user"
+        400:
+          description: "Error occurred at activating the user"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /users/{id}/archive:
+    get:
+      tags:
+        - "Users"
+      summary: "Archives a user by id"
+      description: "Archives a user by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the user"
+          type: "string"
+          required: true
+      operationId: "archive"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "User is archived successfully"
+        403:
+          description: "Access is denied to archive the user"
+        400:
+          description: "Error occurred at archiving the user"
+      x-swagger-router-controller: "user"
+      security:
+        - jwt_token: []
+  /boards:
+    get:
+      tags:
+        - "Boards"
+      summary: "Get all the boards"
+      description: "Returns all the boards"
+      operationId: "getAll"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Boards list was returned successfully"
+        403:
+          description: "Access is denied to get boards list"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+    post:
+      tags:
+        - "Boards"
+      summary: "Add new board"
+      description: "Returns new board"
+      operationId: "add"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New board"
+          required: true
+          schema:
+            $ref: "#/definitions/Board"
+      responses:
+        200:
+          description: "New board successfully added"
+        400:
+          description: "New board was not added"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+  /boards/active:
+    get:
+      tags:
+        - "Boards"
+      summary: "Get all active boards"
+      description: "Returns all active boards"
+      operationId: "getAllActive"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of active boards was returned successfully"
+        403:
+          description: "Access is denied to get boards list"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+  /boards/archived:
+    get:
+      tags:
+        - "Boards"
+      summary: "Get all archived boards"
+      description: "Returns all archived boards"
+      operationId: "getAllArchived"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of archived boards was returned successfully"
+        403:
+          description: "Access is denied to get boards list"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+  /boards/{id}:
+    get:
+      tags:
+        - "Boards"
+      summary: "Gets a board by id"
+      description: "Gets a board by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the board"
+          type: "string"
+          required: true
+      operationId: "get"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Board is returned successfully"
+        403:
+          description: "Access is denied to get the board"
+        400:
+          description: "Error occurred at getting the board"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+    delete:
+      tags:
+        - "Boards"
+      summary: "Deletes a board by id"
+      description: "Deletes a board by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the board"
+          type: "string"
+          required: true
+      operationId: "delete"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Board is deleted successfully"
+        403:
+          description: "Access is denied to delete the board"
+        400:
+          description: "Error occurred at deleting the board"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+    put:
+      tags:
+        - "Boards"
+      summary: "Updates a board by id"
+      description: "Updates a board by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the board"
+          type: "string"
+          required: true
+        - name: "body"
+          in: "body"
+          description: "Amended board properties"
+          required: true
+          schema:
+            $ref: "#/definitions/Board"
+      operationId: "update"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Board is updated successfully"
+        403:
+          description: "Access is denied to update the board"
+        400:
+          description: "Error occurred at updating the board"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+  /boards/{id}/activate:
+    put:
+      tags:
+        - "Boards"
+      summary: "Activates a board by id"
+      description: "Activates a board by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the board"
+          type: "string"
+          required: true
+      operationId: "activate"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Board is activated successfully"
+        403:
+          description: "Access is denied to activate the board"
+        400:
+          description: "Error occurred at activating the board"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+  /boards/{id}/archive:
+    put:
+      tags:
+        - "Boards"
+      summary: "Archives a board by id"
+      description: "Archives a board by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the board"
+          type: "string"
+          required: true
+      operationId: "archive"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Board is archived successfully"
+        403:
+          description: "Access is denied to archive the board"
+        400:
+          description: "Error occurred at archiving the board"
+      x-swagger-router-controller: "board"
+      security:
+        - jwt_token: []
+securityDefinitions:
+  jwt_token:
+    description: ""
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  UserSignInInfo:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+  PageNumber:
+    type: integer
+    minimum: 1
+  DateRange:
+    type: "object"
+    properties:
+      start:
+        type: "string"
+      end:
+        type: "string"
+  UserRecoverPasswordInfo:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+  UserRecoverPasswordTokenInfo:
+    type: "object"
+    properties:
+      recoverPwdToken:
+        type: "string"
+  UserSetPasswordInfo:
+    type: "object"
+    properties:
+      recoverPwdToken:
+        type: "string"
+      password:
+        type: "string"
+        description: "New password to set"
+  User:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      password:
+        type: "string"
+      email:
+        type: "string"
+      roles:
+        type: "array"
+        items:
+          type: "string"
+  Board:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      desc:
+        type: "string"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
