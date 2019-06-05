@@ -436,13 +436,13 @@ paths:
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []
-  /boards/active:
+  /boards/open:
     get:
       tags:
         - "Boards"
       summary: "Get all active boards"
       description: "Returns all active boards"
-      operationId: "getAllActive"
+      operationId: "getAllOpen"
       consumes:
         - "application/json"
       produces:
@@ -455,13 +455,13 @@ paths:
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []
-  /boards/archived:
+  /boards/closed:
     get:
       tags:
         - "Boards"
-      summary: "Get all archived boards"
-      description: "Returns all archived boards"
-      operationId: "getAllArchived"
+      summary: "Get all closed boards"
+      description: "Returns all closed boards"
+      operationId: "getAllClosed"
       consumes:
         - "application/json"
       produces:
@@ -559,30 +559,30 @@ paths:
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []
-  /boards/{id}/activate:
+  /boards/{id}/open:
     put:
       tags:
         - "Boards"
-      summary: "Activates a board by id"
-      description: "Activates a board by id"
+      summary: "Opens a board by id"
+      description: "Opens a board by id"
       parameters:
         - name: "id"
           in: "path"
           description: "Id of the board"
           type: "string"
           required: true
-      operationId: "activate"
+      operationId: "open"
       consumes:
         - "application/json"
       produces:
         - "application/json"
       responses:
         200:
-          description: "Board is activated successfully"
+          description: "Board is opened successfully"
         403:
-          description: "Access is denied to activate the board"
+          description: "Access is denied to open the board"
         400:
-          description: "Error occurred at activating the board"
+          description: "Error occurred at openning the board"
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []
@@ -598,18 +598,18 @@ paths:
           description: "Id of the board"
           type: "string"
           required: true
-      operationId: "archive"
+      operationId: "close"
       consumes:
         - "application/json"
       produces:
         - "application/json"
       responses:
         200:
-          description: "Board is archived successfully"
+          description: "Board is closed successfully"
         403:
-          description: "Access is denied to archive the board"
+          description: "Access is denied to close the board"
         400:
-          description: "Error occurred at archiving the board"
+          description: "Error occurred at closing the board"
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []

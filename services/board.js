@@ -7,14 +7,14 @@ async function add(board) {
     return await brd.save();
 }
 
-async function activate(id) {
+async function open(id) {
     return await Board.findOneAndUpdate(
         { _id: id },
         { $set: { closed: false } }
     );
 }
 
-async function archive(id) {
+async function close(id) {
     return await Board.findOneAndUpdate(
         { _id: id },
         { $set: { closed: true } }
@@ -56,8 +56,8 @@ async function getAllClosed() {
 
 module.exports = {
     add,
-    activate,
-    archive,
+    open,
+    close,
     update,
     delete: del,
     get,

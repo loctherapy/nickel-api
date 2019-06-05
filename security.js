@@ -57,14 +57,11 @@ const PERMISSIONS = {
     get BOARDS_UPDATE() {
         return "BOARDS_UPDATE";
     },
-    get BOARDS_ARCHIVE() {
-        return "BOARDS_ARCHIVE";
+    get BOARDS_CLOSE() {
+        return "BOARDS_CLOSE";
     },
-    get BOARDS_ACTIVATE() {
-        return "BOARDS_ACTIVATE";
-    },
-    get BOARDS_MATCH() {
-        return "BOARDS_MATCH";
+    get BOARDS_OPEN() {
+        return "BOARDS_OPEN";
     }
 };
 
@@ -94,9 +91,8 @@ const PERMISSIONS_BY_ROLES = [
             PERMISSIONS.BOARDS_ADD,
             PERMISSIONS.BOARDS_DELETE,
             PERMISSIONS.BOARDS_UPDATE,
-            PERMISSIONS.BOARDS_ARCHIVE,
-            PERMISSIONS.BOARDS_ACTIVATE,
-            PERMISSIONS.BOARDS_MATCH,
+            PERMISSIONS.BOARDS_CLOSE,
+            PERMISSIONS.BOARDS_OPEN,
             //
             // USERS
             PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES

@@ -57,25 +57,25 @@ exports.add = async function(req, res, next) {
     }
 };
 
-exports.activate = async function(req, res, next) {
+exports.open = async function(req, res, next) {
     try {
         await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_ACTIVATE
+            security.PERMISSIONS.BOARDS_OPEN
         ]);
 
-        return res.json(await Board.activate(req.swagger.params.id.value));
+        return res.json(await Board.open(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
 };
 
-exports.archive = async function(req, res, next) {
+exports.close = async function(req, res, next) {
     try {
         await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_ARCHIVE
+            security.PERMISSIONS.BOARDS_CLOSE
         ]);
 
-        return res.json(await Board.archive(req.swagger.params.id.value));
+        return res.json(await Board.close(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
