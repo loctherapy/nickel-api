@@ -77,7 +77,8 @@ app.use(function(request, response, next) {
         // Serve the Swagger documents and Swagger UI
         app.use(middleware.swaggerUi());
 
-        app.use((err, req, res) => {
+        // eslint-disable-next-line no-unused-vars
+        app.use((err, req, res, next) => {
             const code = [
                 responseMessages.CODE_NAMES.TOKEN_IS_EXPIRED,
                 responseMessages.CODE_NAMES.TOKEN_IS_NOT_PROVIDED,
