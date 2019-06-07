@@ -560,7 +560,7 @@ paths:
       security:
         - jwt_token: []
   /boards/{id}/open:
-    put:
+    get:
       tags:
         - "Boards"
       summary: "Opens a board by id"
@@ -586,12 +586,12 @@ paths:
       x-swagger-router-controller: "board"
       security:
         - jwt_token: []
-  /boards/{id}/archive:
-    put:
+  /boards/{id}/close:
+    get:
       tags:
         - "Boards"
-      summary: "Archives a board by id"
-      description: "Archives a board by id"
+      summary: "Closes a board by id"
+      description: "Closes a board by id"
       parameters:
         - name: "id"
           in: "path"

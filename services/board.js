@@ -10,14 +10,16 @@ async function add(board) {
 async function open(id) {
     return await Board.findOneAndUpdate(
         { _id: id },
-        { $set: { closed: false } }
+        { $set: { closed: false } },
+        { new: true }
     );
 }
 
 async function close(id) {
     return await Board.findOneAndUpdate(
         { _id: id },
-        { $set: { closed: true } }
+        { $set: { closed: true } },
+        { new: true }
     );
 }
 
