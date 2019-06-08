@@ -1,5 +1,5 @@
 const config = require("../config")();
-const User = require("../services/user");
+const User = require("../user/user.service");
 const security = require("../security");
 
 module.exports = async function() {

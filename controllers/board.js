@@ -1,4 +1,4 @@
-const Board = require("../services/board");
+const Board = require("../board/board.service");
 const security = require("../security");
 
 exports.getAll = async function(req, res, next) {

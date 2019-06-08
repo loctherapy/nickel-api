@@ -1,4 +1,4 @@
-const Board = require("../dal/models/board");
+const Board = require("./board.model");
 
 async function add(board) {
     const brd = new Board(board);

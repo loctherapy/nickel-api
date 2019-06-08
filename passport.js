@@ -1,6 +1,6 @@
 const JwtStrategy = require("passport-jwt").Strategy;
 const config = require("./config")();
-const User = require("./dal/models/user");
+const User = require("./user/user.model");
 
 module.exports = function(passport) {
     let opts = {

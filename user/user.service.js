@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const bcrypt = require("bcrypt");
 const config = require("../config")();
-const User = require("../dal/models/user"); // get the mongoose model
+const User = require("../user/user.model"); // get the mongoose model
 const responseMessages = require("../response-messages");
 const security = require("../security");
 

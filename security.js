@@ -1,7 +1,7 @@
 "use strict";
 const config = require("./config")();
 const jwt = require("jwt-simple");
-const User = require("./dal/models/user"); // get the mongoose model
+const User = require("./user/user.model"); // get the mongoose model
 const responseMessages = require("./response-messages");
 
 const ROLES = {

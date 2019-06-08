@@ -1,4 +1,4 @@
-const User = require("../services/User");
+const User = require("../user/user.service");
 const security = require("./../security");
 
 module.exports.signIn = function(req, res, next) {
