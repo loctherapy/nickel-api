@@ -38,4 +38,6 @@ BoardSchema.pre("findOneAndUpdate", function(next) {
     next();
 });
 
-module.exports = mongoose.model("Board", BoardSchema);
+module.exports = connection => {
+    return connection.model("Board", BoardSchema);
+};

@@ -1,6 +1,6 @@
-const app = require("./app");
+const app = require("./app/app");
 const config = require("./config")();
-const initializer = require("./init/init");
+const initializer = require("./app/init/init");
 
 (async () => {
     await initializer.initializeAdmins();

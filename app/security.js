@@ -1,5 +1,5 @@
 "use strict";
-const config = require("./config")();
+const config = require("../config")();
 const jwt = require("jwt-simple");
 const User = require("./user/user.model"); // get the mongoose model
 const responseMessages = require("./response-messages");

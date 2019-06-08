@@ -1,4 +1,4 @@
-const config = require("../config")();
+const config = require("../../config")();
 const User = require("../user/user.service");
 const security = require("../security");
 
