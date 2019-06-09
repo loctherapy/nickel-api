@@ -22,7 +22,7 @@ const consts = require("./consts");
 mongoose.set("useFindAndModify", false);
 */
 
-const diContainer = require("./di-container")();
+const diContainer = require("./utils/di-container")();
 diContainer.register(consts.INJECTABLES.DB_URI, config.dbUri);
 diContainer.factory(
     consts.INJECTABLES.CONNECTION,
