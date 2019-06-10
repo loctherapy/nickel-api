@@ -1,8 +1,8 @@
 const app = require("./app/app");
-const diContainer = require("./app/utils/di/app-di-container");
-const Injectables = require("./app/utils/di/injectables");
-const config = diContainer.get(Injectables.CONFIG);
-const InitAdmins = diContainer.get(Injectables.INIT_ADMINS);
+const DIContainer = require("appDIContainer");
+const Injectables = require("injectables");
+const config = DIContainer.get(Injectables.CONFIG);
+const InitAdmins = DIContainer.get(Injectables.INIT_ADMINS);
 
 (async () => {
     await InitAdmins.init();

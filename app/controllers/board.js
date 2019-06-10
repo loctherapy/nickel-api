@@ -1,7 +1,7 @@
-const diContainer = require("./../utils/di/app-di-container");
-const Injectables = require("./../utils/di/injectables");
-const BoardService = diContainer.get(Injectables.BOARD_SERVICE);
-const Security = diContainer.get(Injectables.SECURITY);
+const DIContainer = require("appDIContainer");
+const Injectables = require("injectables");
+const BoardService = DIContainer.get(Injectables.BOARD_SERVICE);
+const Security = DIContainer.get(Injectables.SECURITY);
 
 async function getAll(req, res, next) {
     try {

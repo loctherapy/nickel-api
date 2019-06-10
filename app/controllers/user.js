@@ -1,7 +1,7 @@
-const diContainer = require("./../utils/di/app-di-container");
-const Injectables = require("./../utils/di/injectables");
-const UserService = diContainer.get(Injectables.USER_SERVICE);
-const Security = diContainer.get(Injectables.SECURITY);
+const DIContainer = require("appDIContainer");
+const Injectables = require("injectables");
+const UserService = DIContainer.get(Injectables.USER_SERVICE);
+const Security = DIContainer.get(Injectables.SECURITY);
 
 function signIn(req, res, next) {
     const email = req.swagger.params.body.value.email;
