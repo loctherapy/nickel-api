@@ -1,12 +1,12 @@
-const config = require("../../config")();
-const User = require("../user/user.service");
-const security = require("../security");
+let PredefinedRoles, Security, UserService;
 
-module.exports = async function() {
-    const adminEmails = config.predefinedRoles.admins.map(a => a.email);
-    const adminsInTheDB = await User.getUsers({ email: { $in: adminEmails } });
+async function init() {
+    const adminEmails = PredefinedRoles.admins.map(a => a.email);
+    const adminsInTheDB = await UserService.getUsers({
+        email: { $in: adminEmails }
+    });
     const adminsInTheDBEmails = adminsInTheDB.map(a => a.email);
-    const adminsToCreate = config.predefinedRoles.admins.filter(
+    const adminsToCreate = PredefinedRoles.admins.filter(
         a => !adminsInTheDBEmails.includes(a.email)
     );
     const admins = [];
@@ -17,10 +17,10 @@ module.exports = async function() {
     }
 
     adminsToCreate.forEach(async e => {
-        const admin = await User.add({
+        const admin = await UserService.add({
             firstName: e.firstName,
             lastName: e.lastName,
-            roles: [security.ROLES.ADMIN],
+            roles: [Security.ROLES.ADMIN],
             password: e.password,
             email: e.email
         });
@@ -33,4 +33,14 @@ module.exports = async function() {
     });
 
     return admins;
+}
+
+module.exports = function(predefinedRoles, security, userService) {
+    PredefinedRoles = predefinedRoles;
+    Security = security;
+    UserService = userService;
+
+    return {
+        init
+    };
 };

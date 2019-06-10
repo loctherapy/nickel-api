@@ -1,106 +1,108 @@
-const Board = require("../board/board.service");
-const security = require("../security");
+const diContainer = require("./../utils/di/app-di-container");
+const Injectables = require("./../utils/di/injectables");
+const BoardService = diContainer.get(Injectables.BOARD_SERVICE);
+const Security = diContainer.get(Injectables.SECURITY);
 
-exports.getAll = async function(req, res, next) {
+async function getAll(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
-        return res.json(await Board.getAll());
+        return res.json(await BoardService.getAll());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.getAllOpen = async function(req, res, next) {
+async function getAllOpen(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
-        return res.json(await Board.getAllOpen());
+        return res.json(await BoardService.getAllOpen());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.getAllClosed = async function(req, res, next) {
+async function getAllClosed(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
-        return res.json(await Board.getAllClosed());
+        return res.json(await BoardService.getAllClosed());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.get = async function(req, res, next) {
+async function get(req, res, next) {
     try {
-        await security.validateSecurity(req, [security.PERMISSIONS.BOARDS_GET]);
+        await Security.validateSecurity(req, [Security.PERMISSIONS.BOARDS_GET]);
 
-        return res.json(await Board.get(req.swagger.params.id.value));
+        return res.json(await BoardService.get(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.add = async function(req, res, next) {
+async function add(req, res, next) {
     try {
-        await security.validateSecurity(req, [security.PERMISSIONS.BOARDS_ADD]);
+        await Security.validateSecurity(req, [Security.PERMISSIONS.BOARDS_ADD]);
 
-        return res.json(await Board.add(req.swagger.params.body.value));
+        return res.json(await BoardService.add(req.swagger.params.body.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.open = async function(req, res, next) {
+async function open(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_OPEN
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_OPEN
         ]);
 
-        return res.json(await Board.open(req.swagger.params.id.value));
+        return res.json(await BoardService.open(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.close = async function(req, res, next) {
+async function close(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_CLOSE
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_CLOSE
         ]);
 
-        return res.json(await Board.close(req.swagger.params.id.value));
+        return res.json(await BoardService.close(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.delete = async function(req, res, next) {
+async function del(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_DELETE
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_DELETE
         ]);
 
-        return res.json(await Board.delete(req.swagger.params.id.value));
+        return res.json(await BoardService.delete(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-exports.update = async function(req, res, next) {
+async function update(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.BOARDS_UPDATE
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.BOARDS_UPDATE
         ]);
 
         return res.json(
-            await Board.update({
+            await BoardService.update({
                 board: req.swagger.params.body.value,
                 boardId: req.swagger.params.id.value
             })
@@ -108,4 +110,16 @@ exports.update = async function(req, res, next) {
     } catch (err) {
         return next(err);
     }
+}
+
+module.exports = {
+    getAll,
+    getAllOpen,
+    getAllClosed,
+    get,
+    add,
+    open,
+    close,
+    delete: del,
+    update
 };

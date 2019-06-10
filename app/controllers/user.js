@@ -1,134 +1,138 @@
-const User = require("../user/user.service");
-const security = require("./../security");
+const diContainer = require("./../utils/di/app-di-container");
+const Injectables = require("./../utils/di/injectables");
+const UserService = diContainer.get(Injectables.USER_SERVICE);
+const Security = diContainer.get(Injectables.SECURITY);
 
-module.exports.signIn = function(req, res, next) {
+function signIn(req, res, next) {
     const email = req.swagger.params.body.value.email;
     const password = req.swagger.params.body.value.password;
-    User.signIn(email, password)
+    UserService.signIn(email, password)
         .then(result => {
             return res.json(result);
         })
         .catch(err => {
             return next(err);
         });
-};
+}
 
-module.exports.validateToken = async function(req, res, next) {
+async function validateToken(req, res, next) {
     try {
-        return res.status(200).json(await security.validateToken(req));
+        return res.status(200).json(await Security.validateToken(req));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.getProfile = async function(req, res, next) {
+async function getProfile(req, res, next) {
     try {
-        const user = await security.validateSecurity(req);
-        user.permissions = await security.getAllUserPermissions({
+        const user = await Security.validateSecurity(req);
+        user.permissions = await Security.getAllUserPermissions({
             request: req
         });
         return res.json(user);
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.validateRecoverPwdToken = async function(req, res, next) {
+async function validateRecoverPwdToken(req, res, next) {
     try {
         const rpt = req.swagger.params.body.value.recoverPwdToken;
-        const result = await User.validateRecoveryPwdToken(rpt);
+        const result = await UserService.validateRecoveryPwdToken(rpt);
         return res.json(result);
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.setPassword = async function(req, res, next) {
+async function setPassword(req, res, next) {
     try {
         const rpt = req.swagger.params.body.value.recoverPwdToken;
         const password = req.swagger.params.body.value.password;
-        const result = await User.setPassword(rpt, password);
+        const result = await UserService.setPassword(rpt, password);
         return res.json(result);
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.get = async function(req, res, next) {
+async function get(req, res, next) {
     try {
-        await security.validateSecurity(req, [security.PERMISSIONS.USERS_GET]);
+        await Security.validateSecurity(req, [Security.PERMISSIONS.USERS_GET]);
 
-        return res.json(await User.get(req.swagger.params.id.value));
+        return res.json(await UserService.get(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.getAllUsers = async function(req, res, next) {
+async function getAllUsers(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_GET_ALL
         ]);
 
-        return res.json(await User.getAllUsers());
+        return res.json(await UserService.getAllUsers());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.getActiveUsers = async function(req, res, next) {
+async function getActiveUsers(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_GET_ALL
         ]);
 
-        return res.json(await User.getActiveUsers());
+        return res.json(await UserService.getActiveUsers());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.getArchivedUsers = async function(req, res, next) {
+async function getArchivedUsers(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_GET_ALL
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_GET_ALL
         ]);
 
-        return res.json(await User.getArchivedUsers());
+        return res.json(await UserService.getArchivedUsers());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.getAllAvailableUserRoles = async function(req, res, next) {
+async function getAllAvailableUserRoles(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES
         ]);
 
-        return res.json(await User.getAllAvailableUserRoles());
+        return res.json(await UserService.getAllAvailableUserRoles());
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.activate = async function(req, res, next) {
+async function activate(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_ACTIVATE
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_ACTIVATE
         ]);
 
-        return res.json(await User.activate(req.swagger.params.id.value));
+        return res.json(
+            await UserService.activate(req.swagger.params.id.value)
+        );
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.archive = async function(req, res, next) {
+async function archive(req, res, next) {
     try {
-        const user = await security.validateSecurity(
+        const user = await Security.validateSecurity(
             req,
-            [security.PERMISSIONS.USERS_ARCHIVE],
+            [Security.PERMISSIONS.USERS_ARCHIVE],
             true
         );
         const userToArchiveId = req.swagger.params.id.value;
@@ -137,30 +141,30 @@ module.exports.archive = async function(req, res, next) {
             throw Error(`User can't archive oneself`);
         }
 
-        return res.json(await User.archive(userToArchiveId));
+        return res.json(await UserService.archive(userToArchiveId));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.add = async function(req, res, next) {
+async function add(req, res, next) {
     try {
-        await security.validateSecurity(req, [security.PERMISSIONS.USERS_ADD]);
+        await Security.validateSecurity(req, [Security.PERMISSIONS.USERS_ADD]);
 
-        return res.json(await User.add(req.swagger.params.body.value));
+        return res.json(await UserService.add(req.swagger.params.body.value));
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.update = async function(req, res, next) {
+async function update(req, res, next) {
     try {
-        await security.validateSecurity(req, [
-            security.PERMISSIONS.USERS_UPDATE
+        await Security.validateSecurity(req, [
+            Security.PERMISSIONS.USERS_UPDATE
         ]);
 
         return res.json(
-            await User.update(
+            await UserService.update(
                 req.swagger.params.id.value,
                 req.swagger.params.body.value
             )
@@ -168,13 +172,13 @@ module.exports.update = async function(req, res, next) {
     } catch (err) {
         return next(err);
     }
-};
+}
 
-module.exports.delete = async function(req, res, next) {
+async function del(req, res, next) {
     try {
-        const user = await security.validateSecurity(
+        const user = await Security.validateSecurity(
             req,
-            [security.PERMISSIONS.USERS_DELETE],
+            [Security.PERMISSIONS.USERS_DELETE],
             true
         );
         const userToArchiveId = req.swagger.params.id.value;
@@ -183,8 +187,26 @@ module.exports.delete = async function(req, res, next) {
             throw Error(`User can't delete oneself`);
         }
 
-        return res.json(await User.delete(req.swagger.params.id.value));
+        return res.json(await UserService.delete(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
+}
+
+module.exports = {
+    signIn,
+    validateToken,
+    getProfile,
+    validateRecoverPwdToken,
+    setPassword,
+    get,
+    getAllUsers,
+    getActiveUsers,
+    getArchivedUsers,
+    getAllAvailableUserRoles,
+    activate,
+    archive,
+    add,
+    update,
+    delete: del
 };

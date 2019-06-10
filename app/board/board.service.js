@@ -1,4 +1,4 @@
-const Board = require("./board.model");
+let Board;
 
 async function add(board) {
     const brd = new Board(board);
@@ -56,14 +56,18 @@ async function getAllClosed() {
     return await Board.find({ closed: true });
 }
 
-module.exports = {
-    add,
-    open,
-    close,
-    update,
-    delete: del,
-    get,
-    getAll,
-    getAllOpen,
-    getAllClosed
+module.exports = boardModel => {
+    Board = boardModel;
+
+    return {
+        add,
+        open,
+        close,
+        update,
+        delete: del,
+        get,
+        getAll,
+        getAllOpen,
+        getAllClosed
+    };
 };

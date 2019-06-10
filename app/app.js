@@ -1,19 +1,16 @@
 const fs = require("fs");
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const swaggerTools = require("swagger-tools");
 const jsyaml = require("js-yaml");
 const path = require("path");
 const passport = require("passport");
-const config = require("../config")();
-const responseMessages = require("./response-messages");
+const responseMessages = require("./utils/response-messages");
 // eslint-disable-next-line no-undef
 const dirname = __dirname;
 const publicPath = path.join(dirname, "./public");
-const consts = require("./consts");
 
 /*mongoose.connect(config.dbUri, {
     useCreateIndex: true,
@@ -21,13 +18,6 @@ const consts = require("./consts");
 });
 mongoose.set("useFindAndModify", false);
 */
-
-const diContainer = require("./utils/di-container")();
-diContainer.register(consts.INJECTABLES.DB_URI, config.dbUri);
-diContainer.factory(
-    consts.INJECTABLES.CONNECTION,
-    require("./utils/connection")
-);
 
 app.use(function(request, response, next) {
     //allow cross origin requests

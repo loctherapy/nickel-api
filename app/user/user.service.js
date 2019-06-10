@@ -1,20 +1,18 @@
 const jwt = require("jwt-simple");
 const bcrypt = require("bcrypt");
-const config = require("../../config")();
-const User = require("./user.model"); // get the mongoose model
-const responseMessages = require("../response-messages");
-const security = require("../security");
 
-exports.signIn = function(email, password) {
+let User, Security, PasswordSecret, PredefinedRoles, ResponseMessages;
+
+function signIn(email, password) {
     return new Promise((resolve, reject) => {
         // Check arguments
         if (!email) {
-            return reject(responseMessages.argumentShouldNotBeEmpty("email"));
+            return reject(ResponseMessages.argumentShouldNotBeEmpty("email"));
         }
 
         if (!password) {
             return reject(
-                responseMessages.argumentShouldNotBeEmpty("password")
+                ResponseMessages.argumentShouldNotBeEmpty("password")
             );
         }
 
@@ -27,7 +25,7 @@ exports.signIn = function(email, password) {
 
                 if (!user) {
                     return reject(
-                        responseMessages.authenticationFailed(
+                        ResponseMessages.authenticationFailed(
                             `user with email ${email} not found`
                         )
                     );
@@ -35,7 +33,7 @@ exports.signIn = function(email, password) {
 
                 if (!user.isActive) {
                     return reject(
-                        responseMessages.authenticationFailed(
+                        ResponseMessages.authenticationFailed(
                             `user with email ${email} is archived`
                         )
                     );
@@ -45,14 +43,14 @@ exports.signIn = function(email, password) {
                 user.comparePassword(password, function(err, isMatch) {
                     if (isMatch && !err) {
                         // if user is found and password is right create a token
-                        let expires = security.getExpirationDate();
+                        let expires = Security.getExpirationDate();
                         let token = jwt.encode(
                             {
                                 email: user.email,
                                 expires: expires.toISOString(),
                                 _id: user._id
                             },
-                            config.secret
+                            PasswordSecret
                         );
                         // return the information including token as JSON
                         return resolve({
@@ -62,7 +60,7 @@ exports.signIn = function(email, password) {
                         });
                     } else {
                         return reject(
-                            responseMessages.authenticationFailed(
+                            ResponseMessages.authenticationFailed(
                                 `wrong password`
                             )
                         );
@@ -71,25 +69,25 @@ exports.signIn = function(email, password) {
             }
         );
     });
-};
+}
 
 function validateRecoveryPasswordToken(token) {
     return new Promise((resolve, reject) => {
         try {
-            const tokenDecoded = jwt.decode(token, config.secret);
+            const tokenDecoded = jwt.decode(token, PasswordSecret);
             const email = tokenDecoded.email;
             const expires = tokenDecoded.expires;
             const expiresParsed = Date.parse(expires);
 
             // Validate email and expires - if they are empty
             if (!email || !expires || isNaN(expiresParsed)) {
-                return reject(responseMessages.tokenIsNotValid());
+                return reject(ResponseMessages.tokenIsNotValid());
             }
 
             // Validate if the token is expired
             if (new Date() > expiresParsed) {
                 return reject(
-                    responseMessages.tokenIsExpired(new Date(expiresParsed))
+                    ResponseMessages.tokenIsExpired(new Date(expiresParsed))
                 );
             }
 
@@ -99,12 +97,12 @@ function validateRecoveryPasswordToken(token) {
                 message: "Token is valid"
             });
         } catch (e) {
-            return reject(responseMessages.tokenIsNotValid());
+            return reject(ResponseMessages.tokenIsNotValid());
         }
     });
 }
 
-exports.validateRecoveryPwdToken = function(recoverPwdToken) {
+function validateRecoveryPwdToken(recoverPwdToken) {
     return new Promise((resolve, reject) => {
         validateRecoveryPasswordToken(recoverPwdToken)
             .then(res => {
@@ -114,7 +112,7 @@ exports.validateRecoveryPwdToken = function(recoverPwdToken) {
                     .lean()
                     .exec((err, user) => {
                         if (err || !user) {
-                            return reject(responseMessages.tokenIsNotValid());
+                            return reject(ResponseMessages.tokenIsNotValid());
                         }
 
                         delete user.password;
@@ -126,18 +124,18 @@ exports.validateRecoveryPwdToken = function(recoverPwdToken) {
                 return reject(err);
             });
     });
-};
+}
 
 function generatePasswordHash(email, password) {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(10, function(err, salt) {
             if (err) {
-                return reject(responseMessages.cannotResetPassword(email));
+                return reject(ResponseMessages.cannotResetPassword(email));
             }
 
             bcrypt.hash(password, salt, function(err, hash) {
                 if (err) {
-                    return reject(responseMessages.cannotResetPassword(email));
+                    return reject(ResponseMessages.cannotResetPassword(email));
                 }
 
                 return resolve(hash);
@@ -146,14 +144,14 @@ function generatePasswordHash(email, password) {
     });
 }
 
-exports.setPassword = function(token, password) {
+function setPassword(token, password) {
     return new Promise((resolve, reject) => {
         validateRecoveryPasswordToken(token)
             .then(res => {
                 User.findOne({ email: res.email }).exec(async (err, user) => {
                     if (err || !user) {
                         return reject(
-                            responseMessages.cannotResetPassword(res.email)
+                            ResponseMessages.cannotResetPassword(res.email)
                         );
                     }
 
@@ -168,7 +166,7 @@ exports.setPassword = function(token, password) {
                         err3 => {
                             if (err3) {
                                 return reject(
-                                    responseMessages.cannotResetPassword(
+                                    ResponseMessages.cannotResetPassword(
                                         res.email
                                     )
                                 );
@@ -183,9 +181,9 @@ exports.setPassword = function(token, password) {
                 return reject(err);
             });
     });
-};
+}
 
-exports.get = function(id) {
+function get(id) {
     return new Promise((resolve, reject) => {
         User.findOne({ _id: id })
             .lean()
@@ -198,7 +196,7 @@ exports.get = function(id) {
                 return resolve(user);
             });
     });
-};
+}
 
 function getUsers(query) {
     return new Promise((resolve, reject) => {
@@ -219,49 +217,47 @@ function getUsers(query) {
     });
 }
 
-exports.getUsers = getUsers;
-
-exports.getAllUsers = function() {
+function getAllUsers() {
     return getUsers({});
-};
+}
 
-exports.getActiveUsers = function() {
+function getActiveUsers() {
     return getUsers({ isActive: true });
-};
+}
 
-exports.getArchivedUsers = function() {
+function getArchivedUsers() {
     return getUsers({ isActive: false });
-};
+}
 
-exports.getAllAvailableUserRoles = function() {
+function getAllAvailableUserRoles() {
     return new Promise(resolve => {
         let allAvailableRoles = [];
 
-        for (let property in security.ROLES) {
-            if (security.ROLES.hasOwnProperty(property)) {
+        for (let property in Security.ROLES) {
+            if (Security.ROLES.hasOwnProperty(property)) {
                 allAvailableRoles.push(property);
             }
         }
 
         resolve(allAvailableRoles);
     });
-};
+}
 
-exports.activate = function(id) {
+function activate(id) {
     return User.findOneAndUpdate(
         { _id: id },
         { $set: { isActive: true } },
         { new: true }
     );
-};
+}
 
 function performIfTheEmailIsInTheListOfPredefinedAdmins(email) {
-    if (config.predefinedRoles.admins.map(a => a.email).includes(email)) {
+    if (PredefinedRoles.admins.map(a => a.email).includes(email)) {
         throw Error(`Can't archive predefined admins`);
     }
 }
 
-exports.archive = async function(id) {
+async function archive(id) {
     const user = await User.findOne({ _id: id });
 
     performIfTheEmailIsInTheListOfPredefinedAdmins(user.email);
@@ -271,17 +267,17 @@ exports.archive = async function(id) {
         { $set: { isActive: false } },
         { new: true }
     );
-};
+}
 
-exports.add = async function(obj) {
+async function add(obj) {
     // Patching isActive property
     obj.isActive = true;
 
     const user = new User(obj);
     return await user.save();
-};
+}
 
-exports.update = async function(id, obj) {
+async function update(id, obj) {
     if (obj.password) {
         obj.password = await generatePasswordHash(obj.email, obj.password);
     }
@@ -291,12 +287,43 @@ exports.update = async function(id, obj) {
         { $set: obj },
         { new: true }
     );
-};
+}
 
-exports.delete = async function(id) {
+async function del(id) {
     const user = await User.findOne({ _id: id });
 
     performIfTheEmailIsInTheListOfPredefinedAdmins(user.email);
 
     return User.deleteOne({ _id: id });
+}
+
+module.exports = (
+    userModel,
+    security,
+    passwordSecret,
+    predefinedRoles,
+    responseMessages
+) => {
+    User = userModel;
+    Security = security;
+    PasswordSecret = passwordSecret;
+    PredefinedRoles = predefinedRoles;
+    ResponseMessages = responseMessages;
+
+    return {
+        signIn,
+        validateRecoveryPwdToken,
+        setPassword,
+        get,
+        getUsers,
+        getAllUsers,
+        getActiveUsers,
+        getArchivedUsers,
+        getAllAvailableUserRoles,
+        activate,
+        archive,
+        add,
+        update,
+        delete: del
+    };
 };

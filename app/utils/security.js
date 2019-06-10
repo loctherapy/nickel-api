@@ -1,8 +1,5 @@
-"use strict";
-const config = require("../config")();
 const jwt = require("jwt-simple");
-const User = require("./user/user.model"); // get the mongoose model
-const responseMessages = require("./response-messages");
+let User, Config, ResponseMessages;
 
 const ROLES = {
     get ADMIN() {
@@ -119,7 +116,7 @@ function getToken(headers) {
 
 function getExpirationDate() {
     let now = new Date();
-    now.setMinutes(now.getMinutes() + config.authToken.expiresInMinutes);
+    now.setMinutes(now.getMinutes() + Config.authToken.expiresInMinutes);
     return now;
 }
 
@@ -130,7 +127,7 @@ function validateToken(req, skipRejectionOnArchivedUsers = false) {
 
             // Local function to verify if the token is expired
             function isTokenExpired(decodedToken) {
-                if (!config.authToken.expirable) {
+                if (!Config.authToken.expirable) {
                     return false;
                 } else {
                     return new Date() <= Date.parse(decodedToken.expires)
@@ -142,16 +139,16 @@ function validateToken(req, skipRejectionOnArchivedUsers = false) {
             return new Promise((resolve, reject) => {
                 // Ok, now let's verify the token
                 if (!token) {
-                    reject(responseMessages.tokenIsNotProvided());
+                    reject(ResponseMessages.tokenIsNotProvided());
                     return;
                 }
 
                 try {
-                    let decoded = jwt.decode(token, config.secret);
+                    let decoded = jwt.decode(token, Config.passwordSecret);
 
                     if (isTokenExpired(decoded)) {
                         let tokenExpires = new Date(decoded.expires);
-                        reject(responseMessages.tokenIsExpired(tokenExpires));
+                        reject(ResponseMessages.tokenIsExpired(tokenExpires));
                         return;
                     }
 
@@ -161,7 +158,7 @@ function validateToken(req, skipRejectionOnArchivedUsers = false) {
                         expires: decoded.expires
                     });
                 } catch (err) {
-                    reject(responseMessages.tokenIsNotValid());
+                    reject(ResponseMessages.tokenIsNotValid());
                 }
             });
         })(req)
@@ -176,7 +173,7 @@ function validateToken(req, skipRejectionOnArchivedUsers = false) {
                         function(err, user) {
                             if (!user || err) {
                                 return reject(
-                                    responseMessages.authenticationFailed(
+                                    ResponseMessages.authenticationFailed(
                                         `user ${token.email} not found`
                                     )
                                 );
@@ -185,7 +182,7 @@ function validateToken(req, skipRejectionOnArchivedUsers = false) {
                             if (!skipRejectionOnArchivedUsers) {
                                 if (!user.isActive) {
                                     return reject(
-                                        responseMessages.authenticationFailed(
+                                        ResponseMessages.authenticationFailed(
                                             `user ${token.email} is archived`
                                         )
                                     );
@@ -246,7 +243,7 @@ function getAllUserRolesIncludingInherited(user) {
     return new Promise((resolve, reject) => {
         if (!user || !user.roles) {
             return reject(
-                responseMessages.argumentShouldNotBeEmpty(user.roles)
+                ResponseMessages.argumentShouldNotBeEmpty(user.roles)
             );
         }
 
@@ -324,7 +321,7 @@ function validateSecurity(
             // Then if requested permissions is not in the array, then, just access is NOT granted
             if (!Array.isArray(requestedPermissions)) {
                 reject(
-                    responseMessages.argumentShouldHaveAnotherType(
+                    ResponseMessages.argumentShouldHaveAnotherType(
                         "requestedPermissions",
                         "array"
                     )
@@ -345,7 +342,7 @@ function validateSecurity(
                         ) {
                             // if requested permission is not found in user roles, then the whole permission security check fails
                             return reject(
-                                responseMessages.permissionDenied(
+                                ResponseMessages.permissionDenied(
                                     requestedPermissions[i]
                                 )
                             );
@@ -362,11 +359,16 @@ function validateSecurity(
     });
 }
 
-module.exports = {
-    getExpirationDate: getExpirationDate,
-    validateToken: validateToken,
-    validateSecurity: validateSecurity,
-    getAllUserPermissions: getAllUserPermissions,
-    ROLES: ROLES,
-    PERMISSIONS: PERMISSIONS
+module.exports = function(userModel, config, responseMessages) {
+    User = userModel;
+    Config = config;
+    ResponseMessages = responseMessages;
+    return {
+        getExpirationDate: getExpirationDate,
+        validateToken: validateToken,
+        validateSecurity: validateSecurity,
+        getAllUserPermissions: getAllUserPermissions,
+        ROLES: ROLES,
+        PERMISSIONS: PERMISSIONS
+    };
 };
