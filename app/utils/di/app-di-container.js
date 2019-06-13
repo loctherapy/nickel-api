@@ -11,19 +11,22 @@ diContainer.register(
     require("../response-messages")
 );
 diContainer.factory(Injectables.CONNECTION, require("../connection"));
-diContainer.factory(Injectables.USER_MODEL, require("../../user/user.model"));
+diContainer.factory(
+    Injectables.USER_MODEL,
+    require("../../bl/user/user.model")
+);
 diContainer.factory(Injectables.SECURITY, require("../security"));
 diContainer.factory(
     Injectables.USER_SERVICE,
-    require("../../user/user.service")
+    require("../../bl/user/user.service")
 );
 diContainer.factory(
     Injectables.BOARD_MODEL,
-    require("../../board/board.model")
+    require("../../bl/board/board.model")
 );
 diContainer.factory(
     Injectables.BOARD_SERVICE,
-    require("../../board/board.service")
+    require("../../bl/board/board.service")
 );
 diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
 
