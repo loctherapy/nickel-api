@@ -12,13 +12,6 @@ const responseMessages = require("./utils/response-messages");
 const dirname = __dirname;
 const publicPath = path.join(dirname, "./public");
 
-/*mongoose.connect(config.dbUri, {
-    useCreateIndex: true,
-    useNewUrlParser: true
-});
-mongoose.set("useFindAndModify", false);
-*/
-
 app.use(function(request, response, next) {
     //allow cross origin requests
     response.setHeader(
