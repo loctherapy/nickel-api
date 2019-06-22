@@ -44,7 +44,7 @@ paths:
           description: "User name and/or password is not provided"
         401:
           description: "Authentication failed"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
   /user/profile:
     get:
       tags:
@@ -61,7 +61,7 @@ paths:
           description: "Profile returned successfully."
         401:
           description: "Authentication failed"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /user/getallavailableroles:
@@ -80,7 +80,7 @@ paths:
           description: "The list of all available roles was returned successfully."
         400:
           description: "The list of all available roles was NOT returned successfully"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /user/validatetoken:
@@ -99,7 +99,7 @@ paths:
           description: "Token verified"
         401:
           description: "Authentication failed"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /user/recoverpwd:
@@ -124,7 +124,7 @@ paths:
           description: "Email with password recovery link was sent"
         400:
           description: "Email with password recovery link was not sent"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
   /user/validaterecoverpwdtoken:
     post:
       tags:
@@ -147,7 +147,7 @@ paths:
           description: "User information"
         400:
           description: "Provided token was expired or invalid"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
   /user/setpwd:
     post:
       tags:
@@ -170,7 +170,7 @@ paths:
           description: "The password was reset"
         400:
           description: "The password was not reset"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
   /users:
     get:
       tags:
@@ -187,7 +187,7 @@ paths:
           description: "User list was returned successfully"
         403:
           description: "Access is denied to get user list"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
     post:
@@ -212,7 +212,7 @@ paths:
           description: "New user successfully added"
         400:
           description: "New student was not added"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /users/active:
@@ -231,7 +231,7 @@ paths:
           description: "A list of active users was returned successfully"
         403:
           description: "Access is denied to get user list"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /users/archived:
@@ -250,7 +250,7 @@ paths:
           description: "A list of archived users was returned successfully"
         403:
           description: "Access is denied to get user list"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /users/{id}:
@@ -277,7 +277,7 @@ paths:
           description: "Access is denied to get the user"
         400:
           description: "Error occurred at getting the user"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
     put:
@@ -309,7 +309,7 @@ paths:
           description: "Access is denied to update the user"
         400:
           description: "Error occurred at updating the user"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
     delete:
@@ -335,7 +335,7 @@ paths:
           description: "Access is denied to delete the user"
         400:
           description: "Error occurred at deleting the user"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /users/{id}/activate:
@@ -362,7 +362,7 @@ paths:
           description: "Access is denied to activate the user"
         400:
           description: "Error occurred at activating the user"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /users/{id}/archive:
@@ -389,7 +389,7 @@ paths:
           description: "Access is denied to archive the user"
         400:
           description: "Error occurred at archiving the user"
-      x-swagger-router-controller: "user"
+      x-swagger-router-controller: "user.controller"
       security:
         - jwt_token: []
   /boards:
@@ -408,7 +408,7 @@ paths:
           description: "Boards list was returned successfully"
         403:
           description: "Access is denied to get boards list"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
     post:
@@ -433,7 +433,7 @@ paths:
           description: "New board successfully added"
         400:
           description: "New board was not added"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
   /boards/open:
@@ -452,7 +452,7 @@ paths:
           description: "A list of active boards was returned successfully"
         403:
           description: "Access is denied to get boards list"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
   /boards/closed:
@@ -471,7 +471,7 @@ paths:
           description: "A list of archived boards was returned successfully"
         403:
           description: "Access is denied to get boards list"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
   /boards/{id}:
@@ -498,7 +498,7 @@ paths:
           description: "Access is denied to get the board"
         400:
           description: "Error occurred at getting the board"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
     delete:
@@ -524,7 +524,7 @@ paths:
           description: "Access is denied to delete the board"
         400:
           description: "Error occurred at deleting the board"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
     put:
@@ -556,7 +556,7 @@ paths:
           description: "Access is denied to update the board"
         400:
           description: "Error occurred at updating the board"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
   /boards/{id}/open:
@@ -583,7 +583,7 @@ paths:
           description: "Access is denied to open the board"
         400:
           description: "Error occurred at openning the board"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
   /boards/{id}/close:
@@ -610,7 +610,7 @@ paths:
           description: "Access is denied to close the board"
         400:
           description: "Error occurred at closing the board"
-      x-swagger-router-controller: "board"
+      x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
 securityDefinitions:
