@@ -1,9 +1,10 @@
 let CommandService;
 
-function run(cmd) {
+async function run(cmd) {
+    const res = await cmd();
     CommandService.add(cmd.serialize());
-    cmd();
     console.log(`Command executed ${JSON.stringify(cmd.serialize())}`);
+    return res;
 }
 
 module.exports = commandService => {
