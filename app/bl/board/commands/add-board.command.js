@@ -7,7 +7,9 @@ function addBoardCmd(board) {
     let boardId = null;
 
     const command = async () => {
-        boardId = await BoardService.add(board);
+        const b = await BoardService.add(board);
+        boardId = b._id;
+        return b;
     };
 
     command.undo = async () => {
@@ -34,5 +36,5 @@ module.exports = (boardService, commands) => {
     BoardService = boardService;
     Commands = commands;
 
-    return { addBoardCmd };
+    return addBoardCmd;
 };

@@ -12,6 +12,12 @@ diContainer.register(
 );
 diContainer.register(Injectables.COMMANDS, require("../cmd/commands"));
 diContainer.factory(Injectables.CONNECTION, require("../connection"));
+diContainer.factory(Injectables.COMMAND_MODEL, require("../cmd/command.model"));
+diContainer.factory(
+    Injectables.COMMAND_SERVICE,
+    require("../cmd/command.service")
+);
+diContainer.factory(Injectables.INVOKER, require("../cmd/invoker"));
 diContainer.factory(
     Injectables.USER_MODEL,
     require("../../bl/user/user.model")
@@ -28,6 +34,10 @@ diContainer.factory(
 diContainer.factory(
     Injectables.BOARD_SERVICE,
     require("../../bl/board/board.service")
+);
+diContainer.factory(
+    Injectables.ADD_BOARD_CMD,
+    require("../../bl/board/commands/add-board.command")
 );
 diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
 
