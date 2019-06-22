@@ -10,6 +10,7 @@ diContainer.register(
     Injectables.RESPONSE_MESSAGES,
     require("../response-messages")
 );
+diContainer.register(Injectables.COMMANDS, require("../cmd/commands"));
 diContainer.factory(Injectables.CONNECTION, require("../connection"));
 diContainer.factory(
     Injectables.USER_MODEL,
