@@ -55,5 +55,8 @@ module.exports = {
     },
     get OPEN_BOARD_CMD() {
         return "openBoardCmd";
+    },
+    get DELETE_BOARD_CMD() {
+        return "deleteBoardCmd";
     }
 };

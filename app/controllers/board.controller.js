@@ -5,6 +5,7 @@ const BoardService = DIContainer.get(Injectables.BOARD_SERVICE);
 const AddBoardCmd = DIContainer.get(Injectables.ADD_BOARD_CMD);
 const CloseBoardCmd = DIContainer.get(Injectables.CLOSE_BOARD_CMD);
 const OpenBoardCmd = DIContainer.get(Injectables.OPEN_BOARD_CMD);
+const DeleteBoardCmd = DIContainer.get(Injectables.DELETE_BOARD_CMD);
 const Security = DIContainer.get(Injectables.SECURITY);
 
 async function getAll(req, res, next) {
@@ -96,7 +97,8 @@ async function del(req, res, next) {
             Security.PERMISSIONS.BOARDS_DELETE
         ]);
 
-        return res.json(await BoardService.delete(req.swagger.params.id.value));
+        const cmd = DeleteBoardCmd(req.swagger.params.id.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
