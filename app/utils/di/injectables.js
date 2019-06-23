@@ -34,5 +34,32 @@ module.exports = {
     },
     get INIT_ADMINS() {
         return "initAdmins";
+    },
+    get COMMAND_MODEL() {
+        return "commandModel";
+    },
+    get COMMAND_SERVICE() {
+        return "commandService";
+    },
+    get COMMANDS() {
+        return "commands";
+    },
+    get INVOKER() {
+        return "invoker";
+    },
+    get ADD_BOARD_CMD() {
+        return "addBoardCmd";
+    },
+    get CLOSE_BOARD_CMD() {
+        return "closeBoardCmd";
+    },
+    get OPEN_BOARD_CMD() {
+        return "openBoardCmd";
+    },
+    get DELETE_BOARD_CMD() {
+        return "deleteBoardCmd";
+    },
+    get UPDATE_BOARD_CMD() {
+        return "updateBoardCmd";
     }
 };

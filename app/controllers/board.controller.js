@@ -1,6 +1,12 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
+const Invoker = DIContainer.get(Injectables.INVOKER);
 const BoardService = DIContainer.get(Injectables.BOARD_SERVICE);
+const AddBoardCmd = DIContainer.get(Injectables.ADD_BOARD_CMD);
+const CloseBoardCmd = DIContainer.get(Injectables.CLOSE_BOARD_CMD);
+const OpenBoardCmd = DIContainer.get(Injectables.OPEN_BOARD_CMD);
+const DeleteBoardCmd = DIContainer.get(Injectables.DELETE_BOARD_CMD);
+const UpdateBoardCmd = DIContainer.get(Injectables.UPDATE_BOARD_CMD);
 const Security = DIContainer.get(Injectables.SECURITY);
 
 async function getAll(req, res, next) {
@@ -53,7 +59,8 @@ async function add(req, res, next) {
     try {
         await Security.validateSecurity(req, [Security.PERMISSIONS.BOARDS_ADD]);
 
-        return res.json(await BoardService.add(req.swagger.params.body.value));
+        const cmd = AddBoardCmd(req.swagger.params.body.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -65,7 +72,8 @@ async function open(req, res, next) {
             Security.PERMISSIONS.BOARDS_OPEN
         ]);
 
-        return res.json(await BoardService.open(req.swagger.params.id.value));
+        const cmd = OpenBoardCmd(req.swagger.params.id.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -77,7 +85,8 @@ async function close(req, res, next) {
             Security.PERMISSIONS.BOARDS_CLOSE
         ]);
 
-        return res.json(await BoardService.close(req.swagger.params.id.value));
+        const cmd = CloseBoardCmd(req.swagger.params.id.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -89,7 +98,8 @@ async function del(req, res, next) {
             Security.PERMISSIONS.BOARDS_DELETE
         ]);
 
-        return res.json(await BoardService.delete(req.swagger.params.id.value));
+        const cmd = DeleteBoardCmd(req.swagger.params.id.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -101,12 +111,12 @@ async function update(req, res, next) {
             Security.PERMISSIONS.BOARDS_UPDATE
         ]);
 
-        return res.json(
-            await BoardService.update({
-                board: req.swagger.params.body.value,
-                boardId: req.swagger.params.id.value
-            })
+        const cmd = UpdateBoardCmd(
+            req.swagger.params.body.value,
+            req.swagger.params.id.value
         );
+
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
