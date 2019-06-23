@@ -10,5 +10,8 @@ module.exports = {
     },
     get DELETE_BOARD_CMD() {
         return "DELETE_BOARD_CMD";
+    },
+    get UPDATE_BOARD_CMD() {
+        return "UPDATE_BOARD_CMD";
     }
 };

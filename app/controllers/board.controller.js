@@ -6,6 +6,7 @@ const AddBoardCmd = DIContainer.get(Injectables.ADD_BOARD_CMD);
 const CloseBoardCmd = DIContainer.get(Injectables.CLOSE_BOARD_CMD);
 const OpenBoardCmd = DIContainer.get(Injectables.OPEN_BOARD_CMD);
 const DeleteBoardCmd = DIContainer.get(Injectables.DELETE_BOARD_CMD);
+const UpdateBoardCmd = DIContainer.get(Injectables.UPDATE_BOARD_CMD);
 const Security = DIContainer.get(Injectables.SECURITY);
 
 async function getAll(req, res, next) {
@@ -110,12 +111,12 @@ async function update(req, res, next) {
             Security.PERMISSIONS.BOARDS_UPDATE
         ]);
 
-        return res.json(
-            await BoardService.update({
-                board: req.swagger.params.body.value,
-                boardId: req.swagger.params.id.value
-            })
+        const cmd = UpdateBoardCmd(
+            req.swagger.params.body.value,
+            req.swagger.params.id.value
         );
+
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
