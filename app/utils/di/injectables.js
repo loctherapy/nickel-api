@@ -49,5 +49,8 @@ module.exports = {
     },
     get ADD_BOARD_CMD() {
         return "addBoardCmd";
+    },
+    get CLOSE_BOARD_CMD() {
+        return "closeBoardCmd";
     }
 };
