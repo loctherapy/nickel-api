@@ -43,6 +43,10 @@ diContainer.factory(
     Injectables.CLOSE_BOARD_CMD,
     require("../../bl/board/commands/close-board.command")
 );
+diContainer.factory(
+    Injectables.OPEN_BOARD_CMD,
+    require("../../bl/board/commands/open-board.command")
+);
 diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
 
 module.exports = diContainer;

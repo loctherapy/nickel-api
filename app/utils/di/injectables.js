@@ -52,5 +52,8 @@ module.exports = {
     },
     get CLOSE_BOARD_CMD() {
         return "closeBoardCmd";
+    },
+    get OPEN_BOARD_CMD() {
+        return "openBoardCmd";
     }
 };

@@ -4,6 +4,7 @@ const Invoker = DIContainer.get(Injectables.INVOKER);
 const BoardService = DIContainer.get(Injectables.BOARD_SERVICE);
 const AddBoardCmd = DIContainer.get(Injectables.ADD_BOARD_CMD);
 const CloseBoardCmd = DIContainer.get(Injectables.CLOSE_BOARD_CMD);
+const OpenBoardCmd = DIContainer.get(Injectables.OPEN_BOARD_CMD);
 const Security = DIContainer.get(Injectables.SECURITY);
 
 async function getAll(req, res, next) {
@@ -69,7 +70,8 @@ async function open(req, res, next) {
             Security.PERMISSIONS.BOARDS_OPEN
         ]);
 
-        return res.json(await BoardService.open(req.swagger.params.id.value));
+        const cmd = OpenBoardCmd(req.swagger.params.id.value);
+        return res.json(await Invoker.run(cmd));
     } catch (err) {
         return next(err);
     }
