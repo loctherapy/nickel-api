@@ -1,13 +1,15 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
 const Invoker = DIContainer.get(Injectables.INVOKER);
-const BoardService = DIContainer.get(Injectables.BOARD_SERVICE);
-const AddBoardCmd = DIContainer.get(Injectables.ADD_BOARD_CMD);
-const CloseBoardCmd = DIContainer.get(Injectables.CLOSE_BOARD_CMD);
-const OpenBoardCmd = DIContainer.get(Injectables.OPEN_BOARD_CMD);
-const DeleteBoardCmd = DIContainer.get(Injectables.DELETE_BOARD_CMD);
-const UpdateBoardCmd = DIContainer.get(Injectables.UPDATE_BOARD_CMD);
 const Security = DIContainer.get(Injectables.SECURITY);
+
+const BOARD_MODULE = DIContainer.get(Injectables.BOARD_MODULE);
+const BoardService = DIContainer.get(BOARD_MODULE.BOARD_SERVICE);
+const AddBoardCmd = DIContainer.get(BOARD_MODULE.ADD_BOARD_CMD);
+const CloseBoardCmd = DIContainer.get(BOARD_MODULE.CLOSE_BOARD_CMD);
+const OpenBoardCmd = DIContainer.get(BOARD_MODULE.OPEN_BOARD_CMD);
+const DeleteBoardCmd = DIContainer.get(BOARD_MODULE.DELETE_BOARD_CMD);
+const UpdateBoardCmd = DIContainer.get(BOARD_MODULE.UPDATE_BOARD_CMD);
 
 async function getAll(req, res, next) {
     try {

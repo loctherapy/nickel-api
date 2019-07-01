@@ -20,12 +20,6 @@ module.exports = {
     get CONNECTION() {
         return "connection";
     },
-    get BOARD_MODEL() {
-        return "boardModel";
-    },
-    get BOARD_SERVICE() {
-        return "boardService";
-    },
     get USER_MODEL() {
         return "userModel";
     },
@@ -47,19 +41,7 @@ module.exports = {
     get INVOKER() {
         return "invoker";
     },
-    get ADD_BOARD_CMD() {
-        return "addBoardCmd";
-    },
-    get CLOSE_BOARD_CMD() {
-        return "closeBoardCmd";
-    },
-    get OPEN_BOARD_CMD() {
-        return "openBoardCmd";
-    },
-    get DELETE_BOARD_CMD() {
-        return "deleteBoardCmd";
-    },
-    get UPDATE_BOARD_CMD() {
-        return "updateBoardCmd";
+    get BOARD_MODULE() {
+        return "BOARD";
     }
 };

@@ -27,34 +27,7 @@ diContainer.factory(
     Injectables.USER_SERVICE,
     require("../../bl/user/user.service")
 );
-diContainer.factory(
-    Injectables.BOARD_MODEL,
-    require("../../bl/board/board.model")
-);
-diContainer.factory(
-    Injectables.BOARD_SERVICE,
-    require("../../bl/board/board.service")
-);
-diContainer.factory(
-    Injectables.ADD_BOARD_CMD,
-    require("../../bl/board/commands/add-board.command")
-);
-diContainer.factory(
-    Injectables.CLOSE_BOARD_CMD,
-    require("../../bl/board/commands/close-board.command")
-);
-diContainer.factory(
-    Injectables.OPEN_BOARD_CMD,
-    require("../../bl/board/commands/open-board.command")
-);
-diContainer.factory(
-    Injectables.DELETE_BOARD_CMD,
-    require("../../bl/board/commands/delete-board.command")
-);
-diContainer.factory(
-    Injectables.UPDATE_BOARD_CMD,
-    require("../../bl/board/commands/update-board.command")
-);
+diContainer.addPlugin(require("./../../bl/board/board.module"));
 diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
 
 module.exports = diContainer;
