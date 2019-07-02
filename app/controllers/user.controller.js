@@ -1,6 +1,6 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
-const USER_MODULE_TOKENS = DIContainer.get(Injectables.USER_MODULE);
+const USER_MODULE_TOKENS = DIContainer.get(Injectables.USER_MODULE).TOKENS;
 const UserService = DIContainer.get(USER_MODULE_TOKENS.USER_SERVICE);
 const Security = DIContainer.get(Injectables.SECURITY);
 

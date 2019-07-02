@@ -1,7 +1,8 @@
 // The command is a Proxy on a Service method
 // with additional functionality - it records the data
 // about command to the command stack
-let BoardService, Commands;
+const ACTIONS = require("./actions");
+let BoardService;
 
 function addBoardCmd(board) {
     let boardId = null;
@@ -21,7 +22,7 @@ function addBoardCmd(board) {
 
     command.serialize = () => {
         return {
-            action: Commands.ADD_BOARD_CMD,
+            action: ACTIONS.ADD_BOARD_CMD,
             payload: {
                 board,
                 boardId
@@ -32,9 +33,7 @@ function addBoardCmd(board) {
     return command;
 }
 
-module.exports = (boardService, commands) => {
+module.exports = boardService => {
     BoardService = boardService;
-    Commands = commands;
-
     return addBoardCmd;
 };

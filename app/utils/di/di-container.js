@@ -21,9 +21,9 @@ module.exports = function() {
     };
 
     diContainer.addPlugin = plugin => {
-        const { NAME, TOKENS, FACTORIES } = plugin;
+        const { NAME, ACTIONS, TOKENS, FACTORIES } = plugin;
 
-        register(NAME, TOKENS);
+        register(NAME, { TOKENS, ACTIONS });
 
         FACTORIES.forEach(f => {
             registerFactory(f.token, f.factory);

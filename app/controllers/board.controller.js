@@ -3,7 +3,7 @@ const Injectables = require("injectables");
 const Invoker = DIContainer.get(Injectables.INVOKER);
 const Security = DIContainer.get(Injectables.SECURITY);
 
-const BOARD_MODULE_TOKENS = DIContainer.get(Injectables.BOARD_MODULE);
+const BOARD_MODULE_TOKENS = DIContainer.get(Injectables.BOARD_MODULE).TOKENS;
 const BoardService = DIContainer.get(BOARD_MODULE_TOKENS.BOARD_SERVICE);
 const AddBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.ADD_BOARD_CMD);
 const CloseBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.CLOSE_BOARD_CMD);

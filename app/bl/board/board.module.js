@@ -1,3 +1,4 @@
+const ACTIONS = require("./commands/actions");
 const NAME = "BOARD";
 
 const TOKENS = {
@@ -58,5 +59,6 @@ const FACTORIES = [
 module.exports = {
     NAME,
     TOKENS,
+    ACTIONS,
     FACTORIES
 };
