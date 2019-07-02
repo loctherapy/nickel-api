@@ -18,15 +18,8 @@ diContainer.factory(
     require("../cmd/command.service")
 );
 diContainer.factory(Injectables.INVOKER, require("../cmd/invoker"));
-diContainer.factory(
-    Injectables.USER_MODEL,
-    require("../../bl/user/user.model")
-);
+diContainer.addPlugin(require("./../../bl/user/user.module"));
 diContainer.factory(Injectables.SECURITY, require("../security"));
-diContainer.factory(
-    Injectables.USER_SERVICE,
-    require("../../bl/user/user.service")
-);
 diContainer.addPlugin(require("./../../bl/board/board.module"));
 diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
 

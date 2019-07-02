@@ -20,12 +20,6 @@ module.exports = {
     get CONNECTION() {
         return "connection";
     },
-    get USER_MODEL() {
-        return "userModel";
-    },
-    get USER_SERVICE() {
-        return "userService";
-    },
     get INIT_ADMINS() {
         return "initAdmins";
     },
@@ -43,5 +37,8 @@ module.exports = {
     },
     get BOARD_MODULE() {
         return "BOARD";
+    },
+    get USER_MODULE() {
+        return "USER";
     }
 };
