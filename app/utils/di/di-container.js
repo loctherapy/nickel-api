@@ -21,13 +21,24 @@ module.exports = function() {
     };
 
     diContainer.addPlugin = plugin => {
-        const { NAME, ACTIONS, TOKENS, FACTORIES } = plugin;
+        const { NAME, ACTIONS, TOKENS, FACTORIES, DEPENDENCIES } = plugin;
 
+        // Register tokens and actions
         register(NAME, { TOKENS, ACTIONS });
 
-        FACTORIES.forEach(f => {
-            registerFactory(f.token, f.factory);
-        });
+        // Register dependencies
+        if (DEPENDENCIES && Array.isArray(DEPENDENCIES)) {
+            DEPENDENCIES.forEach(d => {
+                register(d.token, d.dependency);
+            });
+        }
+
+        // Register factories
+        if (FACTORIES && Array.isArray(FACTORIES)) {
+            FACTORIES.forEach(f => {
+                registerFactory(f.token, f.factory);
+            });
+        }
     };
 
     function register(name, dep) {
