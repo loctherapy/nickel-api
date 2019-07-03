@@ -59,6 +59,29 @@ const PERMISSIONS = {
     },
     get BOARDS_OPEN() {
         return "BOARDS_OPEN";
+    },
+    //
+    // LISTS
+    get LISTS_GET_ALL() {
+        return "LISTS_GET_ALL";
+    },
+    get LISTS_GET() {
+        return "LISTS_GET";
+    },
+    get LISTS_ADD() {
+        return "LISTS_ADD";
+    },
+    get LISTS_DELETE() {
+        return "LISTS_DELETE";
+    },
+    get LISTS_UPDATE() {
+        return "LISTS_UPDATE";
+    },
+    get LISTS_CLOSE() {
+        return "LISTS_CLOSE";
+    },
+    get LISTS_OPEN() {
+        return "LISTS_OPEN";
     }
 };
 
@@ -90,6 +113,15 @@ const PERMISSIONS_BY_ROLES = [
             PERMISSIONS.BOARDS_UPDATE,
             PERMISSIONS.BOARDS_CLOSE,
             PERMISSIONS.BOARDS_OPEN,
+            //
+            // LISTS
+            PERMISSIONS.LISTS_GET_ALL,
+            PERMISSIONS.LISTS_GET,
+            PERMISSIONS.LISTS_ADD,
+            PERMISSIONS.LISTS_DELETE,
+            PERMISSIONS.LISTS_UPDATE,
+            PERMISSIONS.LISTS_CLOSE,
+            PERMISSIONS.LISTS_OPEN,
             //
             // USERS
             PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES

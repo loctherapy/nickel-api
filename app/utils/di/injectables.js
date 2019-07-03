@@ -35,10 +35,13 @@ module.exports = {
     get INVOKER() {
         return "invoker";
     },
+    get USER_MODULE() {
+        return "USER";
+    },
     get BOARD_MODULE() {
         return "BOARD";
     },
-    get USER_MODULE() {
-        return "USER";
+    get LIST_MODULE() {
+        return "LIST";
     }
 };
