@@ -26,17 +26,8 @@ module.exports = {
     get INIT_ADMINS() {
         return "initAdmins";
     },
-    get COMMAND_MODEL() {
-        return "commandModel";
-    },
-    get COMMAND_SERVICE() {
-        return "commandService";
-    },
-    get COMMANDS() {
-        return "commands";
-    },
-    get INVOKER() {
-        return "invoker";
+    get COMMAND_MODULE() {
+        return "COMMAND";
     },
     get SECURITY_MODULE() {
         return "SECURITY";

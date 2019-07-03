@@ -1,6 +1,8 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
-const Invoker = DIContainer.get(Injectables.INVOKER);
+const COMMAND_MODULE_TOKENS = DIContainer.get(Injectables.COMMAND_MODULE)
+    .TOKENS;
+const CommandInvoker = DIContainer.get(COMMAND_MODULE_TOKENS.COMMAND_INVOKER);
 const SecuritySettings = DIContainer.get(Injectables.SECURITY_SETTINGS);
 const SECURITY_MODULE_TOKENS = DIContainer.get(Injectables.SECURITY_MODULE)
     .TOKENS;
@@ -70,7 +72,7 @@ async function add(req, res, next) {
         ]);
 
         const cmd = AddListCmd(req.swagger.params.body.value);
-        return res.json(await Invoker.run(cmd));
+        return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -83,7 +85,7 @@ async function open(req, res, next) {
         ]);
 
         const cmd = OpenListCmd(req.swagger.params.id.value);
-        return res.json(await Invoker.run(cmd));
+        return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -96,7 +98,7 @@ async function close(req, res, next) {
         ]);
 
         const cmd = CloseListCmd(req.swagger.params.id.value);
-        return res.json(await Invoker.run(cmd));
+        return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -109,7 +111,7 @@ async function del(req, res, next) {
         ]);
 
         const cmd = DeleteListCmd(req.swagger.params.id.value);
-        return res.json(await Invoker.run(cmd));
+        return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
     }
@@ -126,7 +128,7 @@ async function update(req, res, next) {
             req.swagger.params.id.value
         );
 
-        return res.json(await Invoker.run(cmd));
+        return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
     }

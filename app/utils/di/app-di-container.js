@@ -23,14 +23,9 @@ diContainer.register(
     require("../response-messages")
 );
 diContainer.factory(Injectables.CONNECTION, require("../connection"));
-diContainer.factory(Injectables.COMMAND_MODEL, require("../cmd/command.model"));
-diContainer.factory(
-    Injectables.COMMAND_SERVICE,
-    require("../cmd/command.service")
-);
-diContainer.factory(Injectables.INVOKER, require("../cmd/invoker"));
 
 // Plugins
+diContainer.addPlugin(require("../../plugins/command/command.module"));
 diContainer.addPlugin(require("../../plugins/user/user.module"));
 diContainer.addPlugin(require("../../plugins/security/security.module"));
 diContainer.addPlugin(require("../../plugins/board/board.module"));
