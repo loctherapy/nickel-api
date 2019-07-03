@@ -1,7 +1,12 @@
 const jwt = require("jwt-simple");
 const bcrypt = require("bcrypt");
 
-let User, Security, PasswordSecret, PredefinedRoles, ResponseMessages;
+let User,
+    SecuritySettings,
+    SecurityService,
+    PasswordSecret,
+    PredefinedRoles,
+    ResponseMessages;
 
 function signIn(email, password) {
     return new Promise((resolve, reject) => {
@@ -43,7 +48,7 @@ function signIn(email, password) {
                 user.comparePassword(password, function(err, isMatch) {
                     if (isMatch && !err) {
                         // if user is found and password is right create a token
-                        let expires = Security.getExpirationDate();
+                        let expires = SecurityService.getExpirationDate();
                         let token = jwt.encode(
                             {
                                 email: user.email,
@@ -233,8 +238,8 @@ function getAllAvailableUserRoles() {
     return new Promise(resolve => {
         let allAvailableRoles = [];
 
-        for (let property in Security.ROLES) {
-            if (Security.ROLES.hasOwnProperty(property)) {
+        for (let property in SecuritySettings.ROLES) {
+            if (SecuritySettings.ROLES.hasOwnProperty(property)) {
                 allAvailableRoles.push(property);
             }
         }
@@ -299,13 +304,15 @@ async function del(id) {
 
 module.exports = (
     userModel,
-    security,
+    securitySettings,
+    securityService,
     passwordSecret,
     predefinedRoles,
     responseMessages
 ) => {
     User = userModel;
-    Security = security;
+    SecuritySettings = securitySettings;
+    SecurityService = securityService;
     PasswordSecret = passwordSecret;
     PredefinedRoles = predefinedRoles;
     ResponseMessages = responseMessages;

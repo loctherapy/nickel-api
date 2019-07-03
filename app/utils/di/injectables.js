@@ -2,14 +2,17 @@ module.exports = {
     get CONFIG() {
         return "config";
     },
+    get SECURITY_SETTINGS() {
+        return "securitySettings";
+    },
     get RESPONSE_MESSAGES() {
         return "responseMessages";
     },
-    get SECURITY() {
-        return "security";
-    },
     get DB_URI() {
         return "dbURI";
+    },
+    get AUTH_TOKEN_EXPIRES_IN_MINUTES() {
+        return "authTokenExpiresInMinutes";
     },
     get PASSWORD_SECRET() {
         return "passwordSecret";
@@ -34,6 +37,9 @@ module.exports = {
     },
     get INVOKER() {
         return "invoker";
+    },
+    get SECURITY_MODULE() {
+        return "SECURITY";
     },
     get USER_MODULE() {
         return "USER";

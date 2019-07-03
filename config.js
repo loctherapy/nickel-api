@@ -11,7 +11,7 @@ module.exports = function() {
             "P6CFmW*tPqsB2U4hM#bKY#AD75BAM2chCmNtBh%AgZ2CqFRhZV&n#PeN2NnPnGPrBtj^3P*n6#FbNUHcPc9Nw7wRwGdUn!^^uuh",
         signUpEnabled: true,
         authToken: {
-            expiresInMinutes: 50,
+            expiresInMinutes: 60 * 24 * 30,
             expirable: false
         },
         changePwdToken: {

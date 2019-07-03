@@ -1,8 +1,12 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
 const Invoker = DIContainer.get(Injectables.INVOKER);
-const Security = DIContainer.get(Injectables.SECURITY);
-
+const SecuritySettings = DIContainer.get(Injectables.SECURITY_SETTINGS);
+const SECURITY_MODULE_TOKENS = DIContainer.get(Injectables.SECURITY_MODULE)
+    .TOKENS;
+const SecurityService = DIContainer.get(
+    SECURITY_MODULE_TOKENS.SECURITY_SERVICE
+);
 const BOARD_MODULE_TOKENS = DIContainer.get(Injectables.BOARD_MODULE).TOKENS;
 const BoardService = DIContainer.get(BOARD_MODULE_TOKENS.BOARD_SERVICE);
 const AddBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.ADD_BOARD_CMD);
@@ -13,8 +17,8 @@ const UpdateBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.UPDATE_BOARD_CMD);
 
 async function getAll(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
         return res.json(await BoardService.getAll());
@@ -25,8 +29,8 @@ async function getAll(req, res, next) {
 
 async function getAllOpen(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
         return res.json(await BoardService.getAllOpen());
@@ -37,8 +41,8 @@ async function getAllOpen(req, res, next) {
 
 async function getAllClosed(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
         ]);
 
         return res.json(await BoardService.getAllClosed());
@@ -49,7 +53,9 @@ async function getAllClosed(req, res, next) {
 
 async function get(req, res, next) {
     try {
-        await Security.validateSecurity(req, [Security.PERMISSIONS.BOARDS_GET]);
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_GET
+        ]);
 
         return res.json(await BoardService.get(req.swagger.params.id.value));
     } catch (err) {
@@ -59,7 +65,9 @@ async function get(req, res, next) {
 
 async function add(req, res, next) {
     try {
-        await Security.validateSecurity(req, [Security.PERMISSIONS.BOARDS_ADD]);
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_ADD
+        ]);
 
         const cmd = AddBoardCmd(req.swagger.params.body.value);
         return res.json(await Invoker.run(cmd));
@@ -70,8 +78,8 @@ async function add(req, res, next) {
 
 async function open(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_OPEN
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_OPEN
         ]);
 
         const cmd = OpenBoardCmd(req.swagger.params.id.value);
@@ -83,8 +91,8 @@ async function open(req, res, next) {
 
 async function close(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_CLOSE
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_CLOSE
         ]);
 
         const cmd = CloseBoardCmd(req.swagger.params.id.value);
@@ -96,8 +104,8 @@ async function close(req, res, next) {
 
 async function del(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_DELETE
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_DELETE
         ]);
 
         const cmd = DeleteBoardCmd(req.swagger.params.id.value);
@@ -109,8 +117,8 @@ async function del(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.BOARDS_UPDATE
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.BOARDS_UPDATE
         ]);
 
         const cmd = UpdateBoardCmd(
