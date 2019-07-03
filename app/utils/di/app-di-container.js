@@ -21,6 +21,6 @@ diContainer.addPlugin(require("./../../bl/user/user.module"));
 diContainer.factory(Injectables.SECURITY, require("../security"));
 diContainer.addPlugin(require("./../../bl/board/board.module"));
 diContainer.addPlugin(require("./../../bl/list/list.module"));
-diContainer.factory(Injectables.INIT_ADMINS, require("../../init/init-admins"));
+diContainer.addPlugin(require("./../../init/init.module"));
 
 module.exports = diContainer;

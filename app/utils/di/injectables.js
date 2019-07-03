@@ -43,5 +43,8 @@ module.exports = {
     },
     get LIST_MODULE() {
         return "LIST";
+    },
+    get INIT_MODULE() {
+        return "INIT";
     }
 };
