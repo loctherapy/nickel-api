@@ -14,7 +14,7 @@ diContainer.register(
 diContainer.register(Injectables.PREDEFINED_ROLES, config.predefinedRoles);
 diContainer.register(
     Injectables.SECURITY_SETTINGS,
-    require("../../../security-settings")
+    require("../../security-settings")
 );
 
 // Factories
