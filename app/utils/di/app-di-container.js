@@ -17,10 +17,10 @@ diContainer.factory(
     require("../cmd/command.service")
 );
 diContainer.factory(Injectables.INVOKER, require("../cmd/invoker"));
-diContainer.addPlugin(require("./../../bl/user/user.module"));
+diContainer.addPlugin(require("../../plugins/user/user.module"));
 diContainer.factory(Injectables.SECURITY, require("../security"));
-diContainer.addPlugin(require("./../../bl/board/board.module"));
-diContainer.addPlugin(require("./../../bl/list/list.module"));
-diContainer.addPlugin(require("./../../init/init.module"));
+diContainer.addPlugin(require("../../plugins/board/board.module"));
+diContainer.addPlugin(require("../../plugins/list/list.module"));
+diContainer.addPlugin(require("../../plugins/init/init.module"));
 
 module.exports = diContainer;
