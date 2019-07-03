@@ -2,7 +2,7 @@ const NAME = "INIT";
 
 const TOKENS = {
     get INIT_ADMINS() {
-        return "boardModel";
+        return "initAdmins";
     }
 };
 
