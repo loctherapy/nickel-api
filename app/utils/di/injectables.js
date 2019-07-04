@@ -2,14 +2,17 @@ module.exports = {
     get CONFIG() {
         return "config";
     },
+    get SECURITY_SETTINGS() {
+        return "securitySettings";
+    },
     get RESPONSE_MESSAGES() {
         return "responseMessages";
     },
-    get SECURITY() {
-        return "security";
-    },
     get DB_URI() {
         return "dbURI";
+    },
+    get AUTH_TOKEN_EXPIRES_IN_MINUTES() {
+        return "authTokenExpiresInMinutes";
     },
     get PASSWORD_SECRET() {
         return "passwordSecret";
@@ -20,46 +23,25 @@ module.exports = {
     get CONNECTION() {
         return "connection";
     },
-    get BOARD_MODEL() {
-        return "boardModel";
-    },
-    get BOARD_SERVICE() {
-        return "boardService";
-    },
-    get USER_MODEL() {
-        return "userModel";
-    },
-    get USER_SERVICE() {
-        return "userService";
-    },
     get INIT_ADMINS() {
         return "initAdmins";
     },
-    get COMMAND_MODEL() {
-        return "commandModel";
+    get COMMAND_MODULE() {
+        return "COMMAND";
     },
-    get COMMAND_SERVICE() {
-        return "commandService";
+    get SECURITY_MODULE() {
+        return "SECURITY";
     },
-    get COMMANDS() {
-        return "commands";
+    get USER_MODULE() {
+        return "USER";
     },
-    get INVOKER() {
-        return "invoker";
+    get BOARD_MODULE() {
+        return "BOARD";
     },
-    get ADD_BOARD_CMD() {
-        return "addBoardCmd";
+    get LIST_MODULE() {
+        return "LIST";
     },
-    get CLOSE_BOARD_CMD() {
-        return "closeBoardCmd";
-    },
-    get OPEN_BOARD_CMD() {
-        return "openBoardCmd";
-    },
-    get DELETE_BOARD_CMD() {
-        return "deleteBoardCmd";
-    },
-    get UPDATE_BOARD_CMD() {
-        return "updateBoardCmd";
+    get INIT_MODULE() {
+        return "INIT";
     }
 };

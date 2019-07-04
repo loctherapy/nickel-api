@@ -1,4 +1,5 @@
-let BoardService, Commands;
+const ACTIONS = require("./actions");
+let BoardService;
 
 function updateBoardCmd(board, boardId) {
     let boardBeforeUpdate = null,
@@ -20,7 +21,7 @@ function updateBoardCmd(board, boardId) {
 
     command.serialize = () => {
         return {
-            action: Commands.UPDATE_BOARD_CMD,
+            action: ACTIONS.UPDATE_BOARD_CMD,
             payload: {
                 boardBeforeUpdate,
                 boardAfterUpdate
@@ -31,9 +32,7 @@ function updateBoardCmd(board, boardId) {
     return command;
 }
 
-module.exports = (boardService, commands) => {
+module.exports = boardService => {
     BoardService = boardService;
-    Commands = commands;
-
     return updateBoardCmd;
 };

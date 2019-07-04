@@ -1,4 +1,5 @@
-let BoardService, Commands;
+const ACTIONS = require("./actions");
+let BoardService;
 
 function openBoardCmd(boardId) {
     const command = async () => {
@@ -12,7 +13,7 @@ function openBoardCmd(boardId) {
 
     command.serialize = () => {
         return {
-            action: Commands.OPEN_BOARD_CMD,
+            action: ACTIONS.OPEN_BOARD_CMD,
             payload: {
                 boardId
             }
@@ -22,9 +23,7 @@ function openBoardCmd(boardId) {
     return command;
 }
 
-module.exports = (boardService, commands) => {
+module.exports = boardService => {
     BoardService = boardService;
-    Commands = commands;
-
     return openBoardCmd;
 };

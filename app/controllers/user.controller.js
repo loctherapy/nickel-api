@@ -1,7 +1,13 @@
 const DIContainer = require("appDIContainer");
 const Injectables = require("injectables");
-const UserService = DIContainer.get(Injectables.USER_SERVICE);
-const Security = DIContainer.get(Injectables.SECURITY);
+const SecuritySettings = DIContainer.get(Injectables.SECURITY_SETTINGS);
+const SECURITY_MODULE_TOKENS = DIContainer.get(Injectables.SECURITY_MODULE)
+    .TOKENS;
+const SecurityService = DIContainer.get(
+    SECURITY_MODULE_TOKENS.SECURITY_SERVICE
+);
+const USER_MODULE_TOKENS = DIContainer.get(Injectables.USER_MODULE).TOKENS;
+const UserService = DIContainer.get(USER_MODULE_TOKENS.USER_SERVICE);
 
 function signIn(req, res, next) {
     const email = req.swagger.params.body.value.email;
@@ -17,7 +23,7 @@ function signIn(req, res, next) {
 
 async function validateToken(req, res, next) {
     try {
-        return res.status(200).json(await Security.validateToken(req));
+        return res.status(200).json(await SecurityService.validateToken(req));
     } catch (err) {
         return next(err);
     }
@@ -25,8 +31,8 @@ async function validateToken(req, res, next) {
 
 async function getProfile(req, res, next) {
     try {
-        const user = await Security.validateSecurity(req);
-        user.permissions = await Security.getAllUserPermissions({
+        const user = await SecurityService.validateSecurity(req);
+        user.permissions = await SecurityService.getAllUserPermissions({
             request: req
         });
         return res.json(user);
@@ -58,7 +64,9 @@ async function setPassword(req, res, next) {
 
 async function get(req, res, next) {
     try {
-        await Security.validateSecurity(req, [Security.PERMISSIONS.USERS_GET]);
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_GET
+        ]);
 
         return res.json(await UserService.get(req.swagger.params.id.value));
     } catch (err) {
@@ -68,8 +76,8 @@ async function get(req, res, next) {
 
 async function getAllUsers(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_GET_ALL
         ]);
 
         return res.json(await UserService.getAllUsers());
@@ -80,8 +88,8 @@ async function getAllUsers(req, res, next) {
 
 async function getActiveUsers(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_GET_ALL
         ]);
 
         return res.json(await UserService.getActiveUsers());
@@ -92,8 +100,8 @@ async function getActiveUsers(req, res, next) {
 
 async function getArchivedUsers(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_GET_ALL
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_GET_ALL
         ]);
 
         return res.json(await UserService.getArchivedUsers());
@@ -104,8 +112,8 @@ async function getArchivedUsers(req, res, next) {
 
 async function getAllAvailableUserRoles(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_GET_ALL_AVAILABLE_USER_ROLES
         ]);
 
         return res.json(await UserService.getAllAvailableUserRoles());
@@ -116,8 +124,8 @@ async function getAllAvailableUserRoles(req, res, next) {
 
 async function activate(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_ACTIVATE
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_ACTIVATE
         ]);
 
         return res.json(
@@ -130,9 +138,9 @@ async function activate(req, res, next) {
 
 async function archive(req, res, next) {
     try {
-        const user = await Security.validateSecurity(
+        const user = await SecurityService.validateSecurity(
             req,
-            [Security.PERMISSIONS.USERS_ARCHIVE],
+            [SecuritySettings.PERMISSIONS.USERS_ARCHIVE],
             true
         );
         const userToArchiveId = req.swagger.params.id.value;
@@ -149,7 +157,9 @@ async function archive(req, res, next) {
 
 async function add(req, res, next) {
     try {
-        await Security.validateSecurity(req, [Security.PERMISSIONS.USERS_ADD]);
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_ADD
+        ]);
 
         return res.json(await UserService.add(req.swagger.params.body.value));
     } catch (err) {
@@ -159,8 +169,8 @@ async function add(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        await Security.validateSecurity(req, [
-            Security.PERMISSIONS.USERS_UPDATE
+        await SecurityService.validateSecurity(req, [
+            SecuritySettings.PERMISSIONS.USERS_UPDATE
         ]);
 
         return res.json(
@@ -176,9 +186,9 @@ async function update(req, res, next) {
 
 async function del(req, res, next) {
     try {
-        const user = await Security.validateSecurity(
+        const user = await SecurityService.validateSecurity(
             req,
-            [Security.PERMISSIONS.USERS_DELETE],
+            [SecuritySettings.PERMISSIONS.USERS_DELETE],
             true
         );
         const userToArchiveId = req.swagger.params.id.value;

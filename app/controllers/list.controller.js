@@ -9,21 +9,21 @@ const SECURITY_MODULE_TOKENS = DIContainer.get(Injectables.SECURITY_MODULE)
 const SecurityService = DIContainer.get(
     SECURITY_MODULE_TOKENS.SECURITY_SERVICE
 );
-const BOARD_MODULE_TOKENS = DIContainer.get(Injectables.BOARD_MODULE).TOKENS;
-const BoardService = DIContainer.get(BOARD_MODULE_TOKENS.BOARD_SERVICE);
-const AddBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.ADD_BOARD_CMD);
-const CloseBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.CLOSE_BOARD_CMD);
-const OpenBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.OPEN_BOARD_CMD);
-const DeleteBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.DELETE_BOARD_CMD);
-const UpdateBoardCmd = DIContainer.get(BOARD_MODULE_TOKENS.UPDATE_BOARD_CMD);
+const LIST_MODULE_TOKENS = DIContainer.get(Injectables.LIST_MODULE).TOKENS;
+const ListService = DIContainer.get(LIST_MODULE_TOKENS.LIST_SERVICE);
+const AddListCmd = DIContainer.get(LIST_MODULE_TOKENS.ADD_LIST_CMD);
+const CloseListCmd = DIContainer.get(LIST_MODULE_TOKENS.CLOSE_LIST_CMD);
+const OpenListCmd = DIContainer.get(LIST_MODULE_TOKENS.OPEN_LIST_CMD);
+const DeleteListCmd = DIContainer.get(LIST_MODULE_TOKENS.DELETE_LIST_CMD);
+const UpdateListCmd = DIContainer.get(LIST_MODULE_TOKENS.UPDATE_LIST_CMD);
 
 async function getAll(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
+            SecuritySettings.PERMISSIONS.LISTS_GET_ALL
         ]);
 
-        return res.json(await BoardService.getAll());
+        return res.json(await ListService.getAll());
     } catch (err) {
         return next(err);
     }
@@ -32,10 +32,10 @@ async function getAll(req, res, next) {
 async function getAllOpen(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
+            SecuritySettings.PERMISSIONS.LISTS_GET_ALL
         ]);
 
-        return res.json(await BoardService.getAllOpen());
+        return res.json(await ListService.getAllOpen());
     } catch (err) {
         return next(err);
     }
@@ -44,10 +44,10 @@ async function getAllOpen(req, res, next) {
 async function getAllClosed(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_GET_ALL
+            SecuritySettings.PERMISSIONS.LISTS_GET_ALL
         ]);
 
-        return res.json(await BoardService.getAllClosed());
+        return res.json(await ListService.getAllClosed());
     } catch (err) {
         return next(err);
     }
@@ -56,10 +56,10 @@ async function getAllClosed(req, res, next) {
 async function get(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_GET
+            SecuritySettings.PERMISSIONS.LISTS_GET
         ]);
 
-        return res.json(await BoardService.get(req.swagger.params.id.value));
+        return res.json(await ListService.get(req.swagger.params.id.value));
     } catch (err) {
         return next(err);
     }
@@ -68,10 +68,10 @@ async function get(req, res, next) {
 async function add(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_ADD
+            SecuritySettings.PERMISSIONS.LISTS_ADD
         ]);
 
-        const cmd = AddBoardCmd(req.swagger.params.body.value);
+        const cmd = AddListCmd(req.swagger.params.body.value);
         return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
@@ -81,10 +81,10 @@ async function add(req, res, next) {
 async function open(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_OPEN
+            SecuritySettings.PERMISSIONS.LISTS_OPEN
         ]);
 
-        const cmd = OpenBoardCmd(req.swagger.params.id.value);
+        const cmd = OpenListCmd(req.swagger.params.id.value);
         return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
@@ -94,10 +94,10 @@ async function open(req, res, next) {
 async function close(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_CLOSE
+            SecuritySettings.PERMISSIONS.LISTS_CLOSE
         ]);
 
-        const cmd = CloseBoardCmd(req.swagger.params.id.value);
+        const cmd = CloseListCmd(req.swagger.params.id.value);
         return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
@@ -107,10 +107,10 @@ async function close(req, res, next) {
 async function del(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_DELETE
+            SecuritySettings.PERMISSIONS.LISTS_DELETE
         ]);
 
-        const cmd = DeleteBoardCmd(req.swagger.params.id.value);
+        const cmd = DeleteListCmd(req.swagger.params.id.value);
         return res.json(await CommandInvoker.run(cmd));
     } catch (err) {
         return next(err);
@@ -120,10 +120,10 @@ async function del(req, res, next) {
 async function update(req, res, next) {
     try {
         await SecurityService.validateSecurity(req, [
-            SecuritySettings.PERMISSIONS.BOARDS_UPDATE
+            SecuritySettings.PERMISSIONS.LISTS_UPDATE
         ]);
 
-        const cmd = UpdateBoardCmd(
+        const cmd = UpdateListCmd(
             req.swagger.params.body.value,
             req.swagger.params.id.value
         );

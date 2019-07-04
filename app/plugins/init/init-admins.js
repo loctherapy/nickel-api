@@ -1,4 +1,4 @@
-let PredefinedRoles, Security, UserService;
+let PredefinedRoles, SecuritySettings, UserService;
 
 async function init() {
     const adminEmails = PredefinedRoles.admins.map(a => a.email);
@@ -20,7 +20,7 @@ async function init() {
         const admin = await UserService.add({
             firstName: e.firstName,
             lastName: e.lastName,
-            roles: [Security.ROLES.ADMIN],
+            roles: [SecuritySettings.ROLES.ADMIN],
             password: e.password,
             email: e.email
         });
@@ -35,9 +35,9 @@ async function init() {
     return admins;
 }
 
-module.exports = function(predefinedRoles, security, userService) {
+module.exports = function(predefinedRoles, securitySettings, userService) {
     PredefinedRoles = predefinedRoles;
-    Security = security;
+    SecuritySettings = securitySettings;
     UserService = userService;
 
     return {

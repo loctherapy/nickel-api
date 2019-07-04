@@ -613,6 +613,227 @@ paths:
       x-swagger-router-controller: "board.controller"
       security:
         - jwt_token: []
+  /lists:
+    get:
+      tags:
+        - "Lists"
+      summary: "Get all the lists"
+      description: "Returns all the lists"
+      operationId: "getAll"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Lists list was returned successfully"
+        403:
+          description: "Access is denied to get lists list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+    post:
+      tags:
+        - "Lists"
+      summary: "Add new list"
+      description: "Returns new list"
+      operationId: "add"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New list"
+          required: true
+          schema:
+            $ref: "#/definitions/List"
+      responses:
+        200:
+          description: "New list successfully added"
+        400:
+          description: "New list was not added"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+  /lists/open:
+    get:
+      tags:
+        - "Lists"
+      summary: "Get all active lists"
+      description: "Returns all active lists"
+      operationId: "getAllOpen"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of active lists was returned successfully"
+        403:
+          description: "Access is denied to get lists list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+  /lists/closed:
+    get:
+      tags:
+        - "Lists"
+      summary: "Get all closed lists"
+      description: "Returns all closed lists"
+      operationId: "getAllClosed"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "A list of archived lists was returned successfully"
+        403:
+          description: "Access is denied to get lists list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+  /lists/{id}:
+    get:
+      tags:
+        - "Lists"
+      summary: "Gets a list by id"
+      description: "Gets a list by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the list"
+          type: "string"
+          required: true
+      operationId: "get"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "List is returned successfully"
+        403:
+          description: "Access is denied to get the list"
+        400:
+          description: "Error occurred at getting the list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+    delete:
+      tags:
+        - "Lists"
+      summary: "Deletes a list by id"
+      description: "Deletes a list by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the list"
+          type: "string"
+          required: true
+      operationId: "delete"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "List is deleted successfully"
+        403:
+          description: "Access is denied to delete the list"
+        400:
+          description: "Error occurred at deleting the list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+    put:
+      tags:
+        - "Lists"
+      summary: "Updates a list by id"
+      description: "Updates a list by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the list"
+          type: "string"
+          required: true
+        - name: "body"
+          in: "body"
+          description: "Amended list properties"
+          required: true
+          schema:
+            $ref: "#/definitions/List"
+      operationId: "update"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "List is updated successfully"
+        403:
+          description: "Access is denied to update the list"
+        400:
+          description: "Error occurred at updating the list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+  /lists/{id}/open:
+    get:
+      tags:
+        - "Lists"
+      summary: "Opens a list by id"
+      description: "Opens a list by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the list"
+          type: "string"
+          required: true
+      operationId: "open"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "List is opened successfully"
+        403:
+          description: "Access is denied to open the list"
+        400:
+          description: "Error occurred at openning the list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
+  /lists/{id}/close:
+    get:
+      tags:
+        - "Lists"
+      summary: "Closes a list by id"
+      description: "Closes a list by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of the list"
+          type: "string"
+          required: true
+      operationId: "close"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "List is closed successfully"
+        403:
+          description: "Access is denied to close the list"
+        400:
+          description: "Error occurred at closing the list"
+      x-swagger-router-controller: "list.controller"
+      security:
+        - jwt_token: []
 securityDefinitions:
   jwt_token:
     description: ""
@@ -674,6 +895,15 @@ definitions:
     type: "object"
     properties:
       name:
+        type: "string"
+      desc:
+        type: "string"
+  List:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      board:
         type: "string"
       desc:
         type: "string"

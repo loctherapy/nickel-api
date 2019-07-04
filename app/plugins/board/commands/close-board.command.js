@@ -1,4 +1,5 @@
-let BoardService, Commands;
+const ACTIONS = require("./actions");
+let BoardService;
 
 function closeBoardCmd(boardId) {
     const command = async () => {
@@ -12,7 +13,7 @@ function closeBoardCmd(boardId) {
 
     command.serialize = () => {
         return {
-            action: Commands.CLOSE_BOARD_CMD,
+            action: ACTIONS.CLOSE_BOARD_CMD,
             payload: {
                 boardId
             }
@@ -22,9 +23,7 @@ function closeBoardCmd(boardId) {
     return command;
 }
 
-module.exports = (boardService, commands) => {
+module.exports = boardService => {
     BoardService = boardService;
-    Commands = commands;
-
     return closeBoardCmd;
 };

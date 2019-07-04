@@ -1,4 +1,5 @@
-let BoardService, Commands;
+const ACTIONS = require("./actions");
+let BoardService;
 
 function deleteBoardCmd(boardId) {
     let board = null;
@@ -17,7 +18,7 @@ function deleteBoardCmd(boardId) {
 
     command.serialize = () => {
         return {
-            action: Commands.DELETE_BOARD_CMD,
+            action: ACTIONS.DELETE_BOARD_CMD,
             payload: {
                 board,
                 boardId
@@ -28,9 +29,7 @@ function deleteBoardCmd(boardId) {
     return command;
 }
 
-module.exports = (boardService, commands) => {
+module.exports = boardService => {
     BoardService = boardService;
-    Commands = commands;
-
     return deleteBoardCmd;
 };
